@@ -1,9 +1,7 @@
 package cn.ixuhan.xdwy.action;
 
+import cn.ixuhan.xdwy.util.WechatInfo;
 import com.google.gson.Gson;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.jsoup.Jsoup;
@@ -13,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Created with Hank.
@@ -31,32 +27,10 @@ import java.util.Properties;
 @Scope("prototype")
 public class WechatAction extends BaseSupport {
 
-    @Autowired
-    private SqlSessionFactoryBean sqlSessionFactory;
     private static String APPID;
     private static String SECRET;
     private static String OPENID;
     private static String NICKNAME;
-
-    //初始化获取appid和secret
-    static {
-        //建立配置容器
-        Properties properties = new Properties();
-        //读取配置文件
-        InputStream inputStream = WechatAction.class.getResourceAsStream("/wechat.properties");
-        try {
-            //把读取到的配置文件加载到配置容器
-            properties.load(inputStream);
-            //获取APPID
-            APPID = properties.get("wechat.APPID").toString();
-            //获取SERCET
-            SECRET = properties.get("wechat.SECRET").toString();
-        }catch (IOException io){
-            System.out.println(io.getMessage());
-            System.out.println("cant load wechat.properties");
-        }
-
-    }
 
     /**
      * 重定向后跳转投票页面，由菜单的连接重定向至该方法，方法从url中得到code参数后，
@@ -66,6 +40,8 @@ public class WechatAction extends BaseSupport {
      */
     @Action(value = "weChatInit", results = {@Result(name = "success", location = "/voteInfo.jsp")})
     public String weChatInit() {
+        APPID = WechatInfo.getAPPID();
+        SECRET = WechatInfo.getSECRET();
 
         String state = "1";
         String code = "123456789";

@@ -40,7 +40,7 @@
 
     <!-- mybatis-spring 自动扫描dao,目的是不需要注册映射器 -->
     <bean id="userMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="cn.ixuhan.xdwy.dao"/>
+        <property name="basePackage" value="cn.ixuhan.xdwy.data"/>
         <!-- 指定的数据源,单数据源可以忽略 -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>

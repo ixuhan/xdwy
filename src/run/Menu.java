@@ -1,3 +1,4 @@
+import cn.ixuhan.xdwy.util.WechatInfo;
 import com.google.gson.Gson;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,32 +13,16 @@ import java.util.Properties;
  * @author hank 2017/6/4
  * @version V1.0.0
  * @time 13:36:06
- * @description Ceate Menu
+ * @description 创建菜单
  */
 public class Menu {
     private static String APPID;
     private static String SECRET;
 
-    //初始化获取appid和secret
-    static {
-        //建立配置容器
-        Properties properties = new Properties();
-        //读取配置文件
-        InputStream inputStream = Menu.class.getResourceAsStream("/wechat.config");
-        try {
-            //把读取到的配置文件加载到配置容器
-            properties.load(inputStream);
-            //获取APPID
-            APPID = properties.get("wechat.APPID").toString();
-            //获取SERCET
-            SECRET = properties.get("wechat.SECRET").toString();
-        } catch (IOException io) {
-            System.out.println(io.getMessage());
-            System.out.println("cant load wechat.config");
-        }
-    }
-
     public static void main(String args[]) {
+        APPID = WechatInfo.getAPPID();
+        SECRET = WechatInfo.getSECRET();
+
         String access_uri = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + APPID + "&secret=" + SECRET;
         String access_token = "";
         try {
