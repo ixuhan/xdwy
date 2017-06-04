@@ -11,7 +11,7 @@
 		    http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- 数据源连接信息配置文件 -->
-    <context:property-placeholder location="classpath*:db.properties"/>
+    <context:property-placeholder location="classpath*:db.config"/>
 
     <!-- spring动态扫描 -->
     <context:annotation-config />
