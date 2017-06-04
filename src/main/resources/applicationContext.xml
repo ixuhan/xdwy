@@ -11,7 +11,7 @@
 		    http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- 数据源连接信息配置文件 -->
-    <context:property-placeholder location="classpath*:db.config"/>
+    <context:property-placeholder location="classpath*:db.properties"/>
 
     <!-- spring动态扫描 -->
     <context:annotation-config />
@@ -33,14 +33,14 @@
         <!-- 数据源 -->
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动使简单类名成为别名 -->
-        <property name="typeAliasesPackage" value="cn.ixuhan.ygk.model"/>
+        <property name="typeAliasesPackage" value="cn.ixuhan.xdwy.model"/>
         <!-- 指定mapper位置 -->
-        <property name="mapperLocations" value="classpath*:mapping/*.xml"/>
+        <property name="mapperLocations" value="classpath*:/mapping/*.xml"/>
     </bean>
 
     <!-- mybatis-spring 自动扫描dao,目的是不需要注册映射器 -->
     <bean id="userMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="cn.ixuhan.ygk.dao"/>
+        <property name="basePackage" value="cn.ixuhan.xdwy.dao"/>
         <!-- 指定的数据源,单数据源可以忽略 -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
