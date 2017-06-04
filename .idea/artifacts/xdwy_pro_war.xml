@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" name="xdwy pro:war">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="xdwy.war">
+    <root id="archive" name="ygk.war">
       <element id="artifact" artifact-name="xdwy pro:war exploded" />
     </root>
   </artifact>

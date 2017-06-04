@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="cn.ixuhan.ygk.dao.GoodsClassifyMapper" >
+    <resultMap id="BaseResultMap" type="cn.ixuhan.ygk.model.GoodsClassify" >
+        <id column="classify_id" property="classifyId" jdbcType="INTEGER" />
+        <result column="classify_name" property="classifyName" jdbcType="VARCHAR" />
+        <result column="classify_desc" property="classifyDesc" jdbcType="VARCHAR" />
+        <result column="classify_lrrq" property="classifyLrrq" jdbcType="DATE" />
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="cn.ixuhan.ygk.model.GoodsClassify" extends="BaseResultMap" >
+        <result column="classify_img" property="classifyImg" jdbcType="LONGVARBINARY" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+        classify_id, classify_name, classify_desc, classify_lrrq
+    </sql>
+    <sql id="Blob_Column_List" >
+        classify_img
+    </sql>
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.ixuhan.ygk.model.GoodsClassifyExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from goods_classify
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.ixuhan.ygk.model.GoodsClassifyExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from goods_classify
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null" >
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from goods_classify
+        where classify_id = #{classifyId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from goods_classify
+        where classify_id = #{classifyId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="cn.ixuhan.ygk.model.GoodsClassifyExample" >
+        delete from goods_classify
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="cn.ixuhan.ygk.model.GoodsClassify" >
+        insert into goods_classify (classify_id, classify_name, classify_desc,
+        classify_lrrq, classify_img)
+        values (#{classifyId,jdbcType=INTEGER}, #{classifyName,jdbcType=VARCHAR}, #{classifyDesc,jdbcType=VARCHAR},
+        #{classifyLrrq,jdbcType=DATE}, #{classifyImg,jdbcType=LONGVARBINARY})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.ixuhan.ygk.model.GoodsClassify" >
+        insert into goods_classify
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="classifyId != null" >
+                classify_id,
+            </if>
+            <if test="classifyName != null" >
+                classify_name,
+            </if>
+            <if test="classifyDesc != null" >
+                classify_desc,
+            </if>
+            <if test="classifyLrrq != null" >
+                classify_lrrq,
+            </if>
+            <if test="classifyImg != null" >
+                classify_img,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="classifyId != null" >
+                #{classifyId,jdbcType=INTEGER},
+            </if>
+            <if test="classifyName != null" >
+                #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyDesc != null" >
+                #{classifyDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyLrrq != null" >
+                #{classifyLrrq,jdbcType=DATE},
+            </if>
+            <if test="classifyImg != null" >
+                #{classifyImg,jdbcType=LONGVARBINARY},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="cn.ixuhan.ygk.model.GoodsClassifyExample" resultType="java.lang.Integer" >
+        select count(*) from goods_classify
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update goods_classify
+        <set >
+            <if test="record.classifyId != null" >
+                classify_id = #{record.classifyId,jdbcType=INTEGER},
+            </if>
+            <if test="record.classifyName != null" >
+                classify_name = #{record.classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.classifyDesc != null" >
+                classify_desc = #{record.classifyDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.classifyLrrq != null" >
+                classify_lrrq = #{record.classifyLrrq,jdbcType=DATE},
+            </if>
+            <if test="record.classifyImg != null" >
+                classify_img = #{record.classifyImg,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map" >
+        update goods_classify
+        set classify_id = #{record.classifyId,jdbcType=INTEGER},
+        classify_name = #{record.classifyName,jdbcType=VARCHAR},
+        classify_desc = #{record.classifyDesc,jdbcType=VARCHAR},
+        classify_lrrq = #{record.classifyLrrq,jdbcType=DATE},
+        classify_img = #{record.classifyImg,jdbcType=LONGVARBINARY}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update goods_classify
+        set classify_id = #{record.classifyId,jdbcType=INTEGER},
+        classify_name = #{record.classifyName,jdbcType=VARCHAR},
+        classify_desc = #{record.classifyDesc,jdbcType=VARCHAR},
+        classify_lrrq = #{record.classifyLrrq,jdbcType=DATE}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.ixuhan.ygk.model.GoodsClassify" >
+        update goods_classify
+        <set >
+            <if test="classifyName != null" >
+                classify_name = #{classifyName,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyDesc != null" >
+                classify_desc = #{classifyDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="classifyLrrq != null" >
+                classify_lrrq = #{classifyLrrq,jdbcType=DATE},
+            </if>
+            <if test="classifyImg != null" >
+                classify_img = #{classifyImg,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        where classify_id = #{classifyId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.ixuhan.ygk.model.GoodsClassify" >
+        update goods_classify
+        set classify_name = #{classifyName,jdbcType=VARCHAR},
+        classify_desc = #{classifyDesc,jdbcType=VARCHAR},
+        classify_lrrq = #{classifyLrrq,jdbcType=DATE},
+        classify_img = #{classifyImg,jdbcType=LONGVARBINARY}
+        where classify_id = #{classifyId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.ixuhan.ygk.model.GoodsClassify" >
+        update goods_classify
+        set classify_name = #{classifyName,jdbcType=VARCHAR},
+        classify_desc = #{classifyDesc,jdbcType=VARCHAR},
+        classify_lrrq = #{classifyLrrq,jdbcType=DATE}
+        where classify_id = #{classifyId,jdbcType=INTEGER}
+    </update>
+</mapper>
