@@ -1,25 +1,24 @@
 package cn.ixuhan.xdwy.action;
 
+import cn.ixuhan.xdwy.util.SHA1;
 import cn.ixuhan.xdwy.util.WechatInfo;
 import com.google.gson.Gson;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import javax.annotation.Resource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created with Hank.
  * User: Hank
- * Date: 2016/11/9 0009
+ * Date: 2016/11/9
  * Time: 12:38
  * Des:微信基础action，用于与微信后台通讯
  */
@@ -33,22 +32,40 @@ public class WechatAction extends BaseSupport {
     private static String NICKNAME;
 
     /**
+     * 微信接入服务器认证
+     */
+    @Action(value = "weChatJoin")
+    public void weChatJoin() throws IOException {
+        String signature = getRequest().getParameter("signature");
+        String timestamp = getRequest().getParameter("timestamp");
+        String nonce = getRequest().getParameter("nonce");
+        String echostr = getRequest().getParameter("echostr");
+        if (SHA1.checkSignature(signature, timestamp, nonce)) {//微信认证，若确认此次GET请求来自微信服务器，
+            // 请原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败
+            PrintWriter out = getResponse().getWriter();
+            out.print(echostr);
+            out.close();
+        } else {
+            return;
+        }
+    }
+
+    /**
      * 重定向后跳转投票页面，由菜单的连接重定向至该方法，方法从url中得到code参数后，
      * 再次获取openid和token，再由token获取nickname。
      * openid和nickname为全局变量
-     * @return 返回的网页
+     * @return 返回到voteInfo
      */
-    @Action(value = "weChatInit", results = {@Result(name = "success", location = "/voteInfo.jsp")})
+    @Action(value = "weChatVote", results = {@Result(name = "success", location = "/jsp/voteInfo.jsp")})
     public String weChatInit() {
         APPID = WechatInfo.getAPPID();
         SECRET = WechatInfo.getSECRET();
 
-        String state = "1";
-        String code = "123456789";
-        //String code = getRequest().getParameter("code");
+        //如果用户同意授权，页面将跳转至 redirect_uri/?code=CODE&state=STATE。
+        String code = getRequest().getParameter("code");
         System.out.println("进入了weChatInit");
-        System.out.println("获取到的code为"+code);
-        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+APPID+"&secret="+SECRET+"&code="+code+"&grant_type=authorization_code";
+        System.out.println("获取到的code为" + code);
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + APPID + "&secret=" + SECRET + "&code=" + code + "&grant_type=authorization_code";
         try {
             Document doc = Jsoup.connect(url).get();
             //返回网页内容
@@ -58,36 +75,26 @@ public class WechatAction extends BaseSupport {
             //解析网页拿到access_token
             String access_token = map.get("access_token").toString();
             OPENID = map.get("openid").toString();
-
             //继续访问
-            String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+OPENID+"&lang=zh_CN";
+            String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + OPENID + "&lang=zh_CN";
             doc = Jsoup.connect(url2).get();
             html = doc.body().html().toString();
             map = gson.fromJson(html, HashMap.class);
             NICKNAME = map.get("nickname").toString();
 
-        }catch (IOException io){
+            getRequest().setAttribute("NICKNAME",NICKNAME);
+
+        } catch (IOException io) {
             System.out.println(io.getMessage());
             System.out.println("cant touch url");
         }
-        OPENID = "aaa";
-        NICKNAME = "xiaoming";
-
-
-        /*String resource = "cn/ixuhan/xdwy/data/vote.xml";
-        Reader reader = Resources.getResourceAsReader(resource);
-        SqlSession sqlSession = new SqlSessionFactoryBuilder().build(reader).openSession();
-        sqlSession.getMapper().*/
-
-
         return SUCCESS;
     }
 
 
-
     //测试
-    @Action(value = "vote",results = {@Result(name = "success", location = "/index.jsp")})
-    public String test(){
+    @Action(value = "vote", results = {@Result(name = "success", location = "/index.jsp")})
+    public String test() {
 
         return "success";
     }
