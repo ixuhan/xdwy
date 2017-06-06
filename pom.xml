@@ -42,6 +42,13 @@
             <version>2.3.20</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/xom/xom -->
+        <dependency>
+            <groupId>xom</groupId>
+            <artifactId>xom</artifactId>
+            <version>1.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-spring-plugin</artifactId>
@@ -134,20 +141,14 @@
             <scope>test</scope>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
 
-    <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>2.1</version>
-        <configuration>
-            <port>8080</port>
-            <path>/xdwy</path>
-            <uriEncoding>UTF-8</uriEncoding>
-            <finalName>xdwy</finalName>
-            <server>tomcat7</server>
-        </configuration>
-    </plugin>
+    </dependencies>
 
     <build>
         <resources>

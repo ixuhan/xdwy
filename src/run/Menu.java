@@ -1,4 +1,6 @@
 import cn.ixuhan.xdwy.util.WechatInfo;
+import net.sf.json.JSONObject;
+import net.sf.json.xml.XMLSerializer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +17,32 @@ import java.net.URLConnection;
  */
 public class Menu {
     public static void main(String args[]) throws Exception {
-        String menu_String = "{\"button\":[{\"name\":\"家电控制\",\"sub_button\":[{\"type\":\"click\",\"name\":\"控制灯\",\"key\":\"Light_Button\"},{\"type\":\"click\",\"name\":\"控制空调\",\"key\":\"AC_Button\"},{\"type\":\"click\",\"name\":\"控制热水器\",\"key\":\"HotWater_Button\"},{\"type\":\"click\",\"name\":\"人体监控器\",\"key\":\"Body_Button\"}]}],\"button\":[{\"name\":\"模式设置\",\"sub_button\":[{\"type\":\"click\",\"name\":\"外出模式\",\"key\":\"WCMS_Button\"},{\"type\":\"click\",\"name\":\"睡眠模式\",\"key\":\"SMMS_Button\"},{\"type\":\"click\",\"name\":\"休闲模式\",\"key\":\"XXMS_Button\"},{\"type\":\"click\",\"name\":\"普通模式\",\"key\":\"PTMS_Button\"}]}],\"button\":[{\"name\":\"其他\",\"sub_button\":[{\"type\":\"click\",\"name\":\"获取监控\",\"key\":\"JK_Button\"},{\"type\":\"click\",\"name\":\"设备状态\",\"key\":\"Status_Button\"},{\"type\":\"click\",\"name\":\"绑定手机\",\"key\":\"Setting_Button\"},{\"type\":\"click\",\"name\":\"数据记录\",\"key\":\"View_Button\"},{\"type\":\"click\",\"name\":\"帮助文档\",\"key\":\"Help_Button\"}]}]}";
+        //urlEncode编码
+        String redirect_uri = "http%3a%2f%2fxdwy.ixuhan.cn%2fweChatVote.do";
+        String uri = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + WechatInfo.getAPPID() + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        String menu_String = "{\n" +
+                "    \"button\": [\n" +
+                "        {\n" +
+                "            \"type\": \"view\", \n" +
+                "            \"name\": \"满意度投票\", \n" +
+                "            \"url\": \"" + uri + "\"\n" +
+                "        }, \n" +
+                "        {\n" +
+                "            \"type\": \"click\", \n" +
+                "            \"name\": \"报修流程\", \n" +
+                "            \"key\": \"bxlc\"\n" +
+                "        }, \n" +
+                "        {\n" +
+                "            \"type\": \"click\", \n" +
+                "            \"name\": \"客服电话\", \n" +
+                "            \"key\": \"kfdh\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+        System.out.println(menu_String);
         String access_token = WechatInfo.getAccess_token();
-        String post_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" +access_token;
+        String post_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + access_token;
+        System.out.println(access_token);
         String result = sendPost(post_URL, menu_String);
         System.out.println("post结果=" + result);
     }

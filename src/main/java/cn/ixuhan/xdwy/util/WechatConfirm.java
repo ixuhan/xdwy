@@ -10,7 +10,7 @@ import java.util.Arrays;
 * @version V1.0.0
 * @description 微信认证步骤
 */
-public class SHA1 {
+public class WechatConfirm {
     public static boolean checkSignature(String signature, String timestamp, String nonce) {
         String token = WechatInfo.getTOKEN();
 
