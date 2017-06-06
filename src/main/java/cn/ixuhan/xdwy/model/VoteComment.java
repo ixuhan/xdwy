@@ -1,13 +1,12 @@
 package cn.ixuhan.xdwy.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author 
  */
 public class VoteComment implements Serializable {
-    private String id;
+    private Integer id;
 
     /**
      * 用户ID
@@ -25,11 +24,6 @@ public class VoteComment implements Serializable {
     private String content;
 
     /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
      * 点赞数量
      */
     private Integer toptop;
@@ -41,11 +35,11 @@ public class VoteComment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -71,14 +65,6 @@ public class VoteComment implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public Integer getToptop() {

@@ -3,19 +3,18 @@ package cn.ixuhan.xdwy.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoteItemsExample {
+public class VoteItemExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-
     private Integer limit;
 
     private Integer offset;
 
-    public VoteItemsExample() {
+    public VoteItemExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -67,6 +66,7 @@ public class VoteItemsExample {
         orderByClause = null;
         distinct = false;
     }
+
     public void setLimit(Integer limit) {
         this.limit = limit;
     }
@@ -134,62 +134,52 @@ public class VoteItemsExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdEqualTo(String value) {
+        public Criteria andIdEqualTo(Integer value) {
             addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotEqualTo(String value) {
+        public Criteria andIdNotEqualTo(Integer value) {
             addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThan(String value) {
+        public Criteria andIdGreaterThan(Integer value) {
             addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThanOrEqualTo(String value) {
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThan(String value) {
+        public Criteria andIdLessThan(Integer value) {
             addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThanOrEqualTo(String value) {
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
             addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLike(String value) {
-            addCriterion("id like", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdNotLike(String value) {
-            addCriterion("id not like", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdIn(List<String> values) {
+        public Criteria andIdIn(List<Integer> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<String> values) {
+        public Criteria andIdNotIn(List<Integer> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdBetween(String value1, String value2) {
+        public Criteria andIdBetween(Integer value1, Integer value2) {
             addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotBetween(String value1, String value2) {
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
             addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
@@ -204,62 +194,52 @@ public class VoteItemsExample {
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdEqualTo(String value) {
+        public Criteria andVoteIdEqualTo(Integer value) {
             addCriterion("vote_id =", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdNotEqualTo(String value) {
+        public Criteria andVoteIdNotEqualTo(Integer value) {
             addCriterion("vote_id <>", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdGreaterThan(String value) {
+        public Criteria andVoteIdGreaterThan(Integer value) {
             addCriterion("vote_id >", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdGreaterThanOrEqualTo(String value) {
+        public Criteria andVoteIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("vote_id >=", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdLessThan(String value) {
+        public Criteria andVoteIdLessThan(Integer value) {
             addCriterion("vote_id <", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdLessThanOrEqualTo(String value) {
+        public Criteria andVoteIdLessThanOrEqualTo(Integer value) {
             addCriterion("vote_id <=", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdLike(String value) {
-            addCriterion("vote_id like", value, "voteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andVoteIdNotLike(String value) {
-            addCriterion("vote_id not like", value, "voteId");
-            return (Criteria) this;
-        }
-
-        public Criteria andVoteIdIn(List<String> values) {
+        public Criteria andVoteIdIn(List<Integer> values) {
             addCriterion("vote_id in", values, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdNotIn(List<String> values) {
+        public Criteria andVoteIdNotIn(List<Integer> values) {
             addCriterion("vote_id not in", values, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdBetween(String value1, String value2) {
+        public Criteria andVoteIdBetween(Integer value1, Integer value2) {
             addCriterion("vote_id between", value1, value2, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdNotBetween(String value1, String value2) {
+        public Criteria andVoteIdNotBetween(Integer value1, Integer value2) {
             addCriterion("vote_id not between", value1, value2, "voteId");
             return (Criteria) this;
         }

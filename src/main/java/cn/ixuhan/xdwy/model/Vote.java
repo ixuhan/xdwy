@@ -7,7 +7,7 @@ import java.util.Date;
  * @author 
  */
 public class Vote implements Serializable {
-    private String id;
+    private Integer id;
 
     /**
      * 投票名称
@@ -44,13 +44,23 @@ public class Vote implements Serializable {
      */
     private Integer toptop;
 
+    /**
+     * 每个选项最多可投票数
+     */
+    private Byte checkOpt;
+
+    /**
+     * 该次投票每人可投总票数
+     */
+    private Integer allCount;
+
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -108,5 +118,21 @@ public class Vote implements Serializable {
 
     public void setToptop(Integer toptop) {
         this.toptop = toptop;
+    }
+
+    public Byte getCheckOpt() {
+        return checkOpt;
+    }
+
+    public void setCheckOpt(Byte checkOpt) {
+        this.checkOpt = checkOpt;
+    }
+
+    public Integer getAllCount() {
+        return allCount;
+    }
+
+    public void setAllCount(Integer allCount) {
+        this.allCount = allCount;
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ixuhan.xdwy.data.VoteItemsMapper">
-  <resultMap id="BaseResultMap" type="cn.ixuhan.xdwy.model.VoteItems">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="vote_id" jdbcType="VARCHAR" property="voteId" />
+<mapper namespace="cn.ixuhan.xdwy.data.VoteItemMapper">
+  <resultMap id="BaseResultMap" type="cn.ixuhan.xdwy.model.VoteItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vote_id" jdbcType="INTEGER" property="voteId" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="picture" jdbcType="VARCHAR" property="picture" />
@@ -72,13 +72,13 @@
   <sql id="Base_Column_List">
     id, vote_id, weight, content, picture, real_count, fake_count, valid
   </sql>
-  <select id="selectByExample" parameterType="cn.ixuhan.xdwy.model.VoteItemsExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="cn.ixuhan.xdwy.model.VoteItemExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from vote_items
+    from vote_item
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -117,37 +117,88 @@
         limit ${limit}
       </if>
     </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from vote_items
-    where id = #{id,jdbcType=VARCHAR}
+    from vote_item
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from vote_items
-    where id = #{id,jdbcType=VARCHAR}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from vote_item
+    where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.ixuhan.xdwy.model.VoteItemsExample">
-    delete from vote_items
+  <delete id="deleteByExample" parameterType="cn.ixuhan.xdwy.model.VoteItemExample">
+    delete from vote_item
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.ixuhan.xdwy.model.VoteItems">
-    insert into vote_items (id, vote_id, weight, 
-      content, picture, real_count, 
-      fake_count, valid)
-    values (#{id,jdbcType=VARCHAR}, #{voteId,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
-      #{content,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{realCount,jdbcType=INTEGER}, 
-      #{fakeCount,jdbcType=INTEGER}, #{valid,jdbcType=TINYINT})
+  <insert id="insert" parameterType="cn.ixuhan.xdwy.model.VoteItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into vote_item (vote_id, weight, content, 
+      picture, real_count, fake_count, 
+      valid)
+    values (#{voteId,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{picture,jdbcType=VARCHAR}, #{realCount,jdbcType=INTEGER}, #{fakeCount,jdbcType=INTEGER}, 
+      #{valid,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="cn.ixuhan.xdwy.model.VoteItems">
-    insert into vote_items
+  <insert id="insertSelective" parameterType="cn.ixuhan.xdwy.model.VoteItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into vote_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="voteId != null">
         vote_id,
       </if>
@@ -171,11 +222,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
       <if test="voteId != null">
-        #{voteId,jdbcType=VARCHAR},
+        #{voteId,jdbcType=INTEGER},
       </if>
       <if test="weight != null">
         #{weight,jdbcType=INTEGER},
@@ -197,20 +245,20 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.ixuhan.xdwy.model.VoteItemsExample" resultType="java.lang.Long">
-    select count(*) from vote_items
+  <select id="countByExample" parameterType="cn.ixuhan.xdwy.model.VoteItemExample" resultType="java.lang.Long">
+    select count(*) from vote_item
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update vote_items
+    update vote_item
     <set>
       <if test="record.id != null">
-        id = #{record.id,jdbcType=VARCHAR},
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.voteId != null">
-        vote_id = #{record.voteId,jdbcType=VARCHAR},
+        vote_id = #{record.voteId,jdbcType=INTEGER},
       </if>
       <if test="record.weight != null">
         weight = #{record.weight,jdbcType=INTEGER},
@@ -236,9 +284,9 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update vote_items
-    set id = #{record.id,jdbcType=VARCHAR},
-      vote_id = #{record.voteId,jdbcType=VARCHAR},
+    update vote_item
+    set id = #{record.id,jdbcType=INTEGER},
+      vote_id = #{record.voteId,jdbcType=INTEGER},
       weight = #{record.weight,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
       picture = #{record.picture,jdbcType=VARCHAR},
@@ -249,11 +297,11 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.ixuhan.xdwy.model.VoteItems">
-    update vote_items
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ixuhan.xdwy.model.VoteItem">
+    update vote_item
     <set>
       <if test="voteId != null">
-        vote_id = #{voteId,jdbcType=VARCHAR},
+        vote_id = #{voteId,jdbcType=INTEGER},
       </if>
       <if test="weight != null">
         weight = #{weight,jdbcType=INTEGER},
@@ -274,17 +322,17 @@
         valid = #{valid,jdbcType=TINYINT},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.ixuhan.xdwy.model.VoteItems">
-    update vote_items
-    set vote_id = #{voteId,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="cn.ixuhan.xdwy.model.VoteItem">
+    update vote_item
+    set vote_id = #{voteId,jdbcType=INTEGER},
       weight = #{weight,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       picture = #{picture,jdbcType=VARCHAR},
       real_count = #{realCount,jdbcType=INTEGER},
       fake_count = #{fakeCount,jdbcType=INTEGER},
       valid = #{valid,jdbcType=TINYINT}
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

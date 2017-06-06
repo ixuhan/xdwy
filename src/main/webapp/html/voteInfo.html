@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
     <title>这是投票页面</title>
 </head>
 <body>
+<fieldset>
+    <legend>Vote</legend>
+    <div class="title">投票标题：${vote.name}</div>
+    <div class="content">投票描述：${vote.description}</div>
+    <form id="${vote.id}" method="post" action="record.do">
+        <input type="hidden" name="voteId" value="${vote.id}">
+        <ul type="none">
+            <#list voteItems as item>
+                <li><input type="radio" id="${item.id}" name="vItemId" value="${item.id}"/><label for="${item.id}">${item.content}</label>
+                </li>
+            </#list>
+        </ul>
+        <input type="submit" value="提交">
+    </form>
+</fieldset>
 
 </body>
 </html>

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class BaseSupport extends ActionSupport implements ServletRequestAware,ServletResponseAware {
     private HttpServletRequest request;
     private HttpServletResponse response;
+    protected String msg = "ok";
 
     public void setServletRequest(HttpServletRequest request) {
         this.request=request;

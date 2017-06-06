@@ -2,11 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ixuhan.xdwy.data.VoteCommentMapper">
   <resultMap id="BaseResultMap" type="cn.ixuhan.xdwy.model.VoteComment">
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="openid" jdbcType="VARCHAR" property="openid" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="toptop" jdbcType="INTEGER" property="toptop" />
     <result column="valid" jdbcType="TINYINT" property="valid" />
   </resultMap>
@@ -69,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, openid, nickname, content, create_time, toptop, valid
+    id, openid, nickname, content, toptop, valid
   </sql>
   <select id="selectByExample" parameterType="cn.ixuhan.xdwy.model.VoteCommentExample" resultMap="BaseResultMap">
     select
@@ -100,32 +99,16 @@
         limit ${limit}
       </if>
     </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from vote_comment
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from vote_comment
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="cn.ixuhan.xdwy.model.VoteCommentExample">
     delete from vote_comment
@@ -134,19 +117,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.ixuhan.xdwy.model.VoteComment">
-    insert into vote_comment (id, openid, nickname, 
-      content, create_time, toptop, 
-      valid)
-    values (#{id,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{toptop,jdbcType=INTEGER}, 
-      #{valid,jdbcType=TINYINT})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into vote_comment (openid, nickname, content, 
+      toptop, valid)
+    values (#{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{toptop,jdbcType=INTEGER}, #{valid,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="cn.ixuhan.xdwy.model.VoteComment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into vote_comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="openid != null">
         openid,
       </if>
@@ -156,9 +140,6 @@
       <if test="content != null">
         content,
       </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
       <if test="toptop != null">
         toptop,
       </if>
@@ -167,9 +148,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
       <if test="openid != null">
         #{openid,jdbcType=VARCHAR},
       </if>
@@ -178,9 +156,6 @@
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="toptop != null">
         #{toptop,jdbcType=INTEGER},
@@ -200,7 +175,7 @@
     update vote_comment
     <set>
       <if test="record.id != null">
-        id = #{record.id,jdbcType=VARCHAR},
+        id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.openid != null">
         openid = #{record.openid,jdbcType=VARCHAR},
@@ -210,9 +185,6 @@
       </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.toptop != null">
         toptop = #{record.toptop,jdbcType=INTEGER},
@@ -227,11 +199,10 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update vote_comment
-    set id = #{record.id,jdbcType=VARCHAR},
+    set id = #{record.id,jdbcType=INTEGER},
       openid = #{record.openid,jdbcType=VARCHAR},
       nickname = #{record.nickname,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
       toptop = #{record.toptop,jdbcType=INTEGER},
       valid = #{record.valid,jdbcType=TINYINT}
     <if test="_parameter != null">
@@ -250,9 +221,6 @@
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="toptop != null">
         toptop = #{toptop,jdbcType=INTEGER},
       </if>
@@ -260,16 +228,15 @@
         valid = #{valid,jdbcType=TINYINT},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.ixuhan.xdwy.model.VoteComment">
     update vote_comment
     set openid = #{openid,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       toptop = #{toptop,jdbcType=INTEGER},
       valid = #{valid,jdbcType=TINYINT}
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

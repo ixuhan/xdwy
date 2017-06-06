@@ -5,13 +5,13 @@ import java.io.Serializable;
 /**
  * @author 
  */
-public class VoteItems implements Serializable {
-    private String id;
+public class VoteItem implements Serializable {
+    private Integer id;
 
     /**
      * 选项所属投票id
      */
-    private String voteId;
+    private Integer voteId;
 
     /**
      * 选项位置
@@ -45,19 +45,19 @@ public class VoteItems implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getVoteId() {
+    public Integer getVoteId() {
         return voteId;
     }
 
-    public void setVoteId(String voteId) {
+    public void setVoteId(Integer voteId) {
         this.voteId = voteId;
     }
 

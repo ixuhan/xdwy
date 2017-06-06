@@ -111,7 +111,7 @@ public class VoteExample {
             criteria.add(new Criterion(condition));
         }
 
-        protected void  addCriterion(String condition, Object value, String property) {
+        protected void addCriterion(String condition, Object value, String property) {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
@@ -135,62 +135,52 @@ public class VoteExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdEqualTo(String value) {
+        public Criteria andIdEqualTo(Integer value) {
             addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotEqualTo(String value) {
+        public Criteria andIdNotEqualTo(Integer value) {
             addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThan(String value) {
+        public Criteria andIdGreaterThan(Integer value) {
             addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThanOrEqualTo(String value) {
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThan(String value) {
+        public Criteria andIdLessThan(Integer value) {
             addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThanOrEqualTo(String value) {
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
             addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLike(String value) {
-            addCriterion("id like", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdNotLike(String value) {
-            addCriterion("id not like", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdIn(List<String> values) {
+        public Criteria andIdIn(List<Integer> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<String> values) {
+        public Criteria andIdNotIn(List<Integer> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdBetween(String value1, String value2) {
+        public Criteria andIdBetween(Integer value1, Integer value2) {
             addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotBetween(String value1, String value2) {
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
             addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
@@ -632,6 +622,126 @@ public class VoteExample {
 
         public Criteria andToptopNotBetween(Integer value1, Integer value2) {
             addCriterion("toptop not between", value1, value2, "toptop");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptIsNull() {
+            addCriterion("check_opt is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptIsNotNull() {
+            addCriterion("check_opt is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptEqualTo(Byte value) {
+            addCriterion("check_opt =", value, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptNotEqualTo(Byte value) {
+            addCriterion("check_opt <>", value, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptGreaterThan(Byte value) {
+            addCriterion("check_opt >", value, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptGreaterThanOrEqualTo(Byte value) {
+            addCriterion("check_opt >=", value, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptLessThan(Byte value) {
+            addCriterion("check_opt <", value, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptLessThanOrEqualTo(Byte value) {
+            addCriterion("check_opt <=", value, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptIn(List<Byte> values) {
+            addCriterion("check_opt in", values, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptNotIn(List<Byte> values) {
+            addCriterion("check_opt not in", values, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptBetween(Byte value1, Byte value2) {
+            addCriterion("check_opt between", value1, value2, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckOptNotBetween(Byte value1, Byte value2) {
+            addCriterion("check_opt not between", value1, value2, "checkOpt");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountIsNull() {
+            addCriterion("all_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountIsNotNull() {
+            addCriterion("all_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountEqualTo(Integer value) {
+            addCriterion("all_count =", value, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountNotEqualTo(Integer value) {
+            addCriterion("all_count <>", value, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountGreaterThan(Integer value) {
+            addCriterion("all_count >", value, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("all_count >=", value, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountLessThan(Integer value) {
+            addCriterion("all_count <", value, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountLessThanOrEqualTo(Integer value) {
+            addCriterion("all_count <=", value, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountIn(List<Integer> values) {
+            addCriterion("all_count in", values, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountNotIn(List<Integer> values) {
+            addCriterion("all_count not in", values, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountBetween(Integer value1, Integer value2) {
+            addCriterion("all_count between", value1, value2, "allCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("all_count not between", value1, value2, "allCount");
             return (Criteria) this;
         }
     }

@@ -2,13 +2,13 @@ package cn.ixuhan.xdwy.util;
 
 import cn.ixuhan.xdwy.action.WechatAction;
 import com.google.gson.Gson;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.cert.TrustAnchor;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,5 +105,38 @@ public class WechatInfo {
     //返回TOKEN
     public static String getTOKEN() {
         return TOKEN;
+    }
+
+    public static JSONObject getOpenIdAndToken(String code)
+    {
+        JSONObject json = new JSONObject();
+        String OPENID = "";
+        String NICKNAME = "";
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+APPID+"&secret="+SECRET+"&code="+code+"&grant_type=authorization_code";
+        try {
+            Document doc = Jsoup.connect(url).get();
+            //返回网页内容
+            String html = doc.body().html().toString();
+            JSONObject object = new JSONObject(html);
+
+            String access_token = object.getString("access_token");
+            OPENID = object.getString("openid");
+            json.put("OPENID",OPENID);
+
+            //继续访问获取用户昵称
+            String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+OPENID+"&lang=zh_CN";
+            doc = Jsoup.connect(url2).get();
+            html = doc.body().html().toString();
+            object = new JSONObject(html);
+            NICKNAME = object.getString("nickname");
+            json.put("NICKNAME",NICKNAME);
+
+        }catch (IOException io){
+            System.out.println(io.getMessage());
+            System.out.println("can't touch url");
+        } catch (JSONException e) {
+            System.out.println("json error");
+        }
+        return json;
     }
 }

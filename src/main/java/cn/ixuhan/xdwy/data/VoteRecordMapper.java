@@ -10,7 +10,7 @@ public interface VoteRecordMapper {
 
     int deleteByExample(VoteRecordExample example);
 
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(VoteRecord record);
 
@@ -18,7 +18,7 @@ public interface VoteRecordMapper {
 
     List<VoteRecord> selectByExample(VoteRecordExample example);
 
-    VoteRecord selectByPrimaryKey(String id);
+    VoteRecord selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") VoteRecord record, @Param("example") VoteRecordExample example);
 

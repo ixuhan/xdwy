@@ -29,7 +29,7 @@ public class Test extends BaseSupport{
         this.getRequest().setAttribute("result","asd");
 
         //第一种方式
-        System.out.println(((Vote)voteService.getVoteById("1")).getName());
+        System.out.println(((Vote)voteService.getVoteById(1)).getName());
 
         //第二种方式
         VoteExample voteExample = new VoteExample();
