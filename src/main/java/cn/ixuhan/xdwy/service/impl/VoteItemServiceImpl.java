@@ -32,4 +32,8 @@ public class VoteItemServiceImpl implements VoteItemService {
     public void updateVoteItemRealCount(int count, int vItemId) {
         voteItemMapper.updateVoteItemRealCount(count,vItemId);
     }
+
+    public Integer change_count(int Operate, int Count_Num, int Which) {
+        return voteItemMapper.change_count(Operate, Count_Num, Which);
+    }
 }

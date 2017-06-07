@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by hank on 2017/6/4 0004.
  */
-@Service("voteService")
+@Service(" ")
 public class VoteServiceImpl implements VoteService {
 
     @Resource

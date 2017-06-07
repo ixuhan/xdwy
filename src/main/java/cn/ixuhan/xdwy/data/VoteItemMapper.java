@@ -41,4 +41,6 @@ public interface VoteItemMapper {
      * @param vItemId 选项Id
      */
     void updateVoteItemRealCount(@Param("count") int count, @Param("id") int vItemId);
+
+    int change_count(int Operate,int Count_Num,int Which);
 }

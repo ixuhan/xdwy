@@ -31,6 +31,7 @@ public class VoteAction extends BaseSupport{
     //属性
     private static String OPENID;
     private static String NICKNAME;
+    private int voteId;
 
     /**
      * 投票主页
@@ -39,18 +40,15 @@ public class VoteAction extends BaseSupport{
     public String vote(){
         try {
             //从url中获得code
-            //String code = getRequest().getParameter("code");
+            String code = getRequest().getParameter("code");
             //从url中获得state参数，标识投票id
-            //int voteId = Integer.parseInt(getRequest().getParameter("state"));
-            String code = "123456789";
-            int voteId = 1;
+            voteId = Integer.parseInt(getRequest().getParameter("state"));
             System.out.println("获取到的code为"+code);
             //发送请求获取token和openid
-            /*JSONObject json = WechatInfo.getOpenIdAndToken(code);
+            JSONObject json = WechatInfo.getOpenIdAndToken(code);
             OPENID = json.getString("OPENID");
-            NICKNAME = json.getString("NICKNAME");*/
+            NICKNAME = json.getString("NICKNAME");
 
-            OPENID = "1216";
             //计算所有项目总投票数 A1.fake+A1.real +...
             int totalCount = voteItemService.sumRealAndFakeCount(voteId);
             getRequest().setAttribute("totalCount",totalCount);
@@ -97,16 +95,20 @@ public class VoteAction extends BaseSupport{
     @Action(value = "record")
     public String record()
     {
+        System.out.println("进入record");
         OPENID = "1216";
         NICKNAME = "小刚";
         //OPENID存在且不为空说明当前投票人员是正确认证的
         if (null != OPENID && !OPENID.equals(""))
         {
-            int voteId = 1;
-            getRequest().getParameter("voteId");
+            System.out.println("voteId:" + voteId);
+            System.out.println("voteId:" + getRequest().getParameter("voteId"));
             //判断是否达到投票最大限制
+            voteId = 1;
             int maxVoteCount = voteService.getMaxVoteCount(voteId);//投票最大数目
             long votedCount = voteRecordService.checkMaxVoteCount(OPENID, "vote", voteId);//当前已投数目
+            System.out.println("maxVoteCount:" + maxVoteCount);
+            System.out.println("votedCount:" + votedCount);
             if (votedCount < maxVoteCount)
             {
                 //获取投票选项id

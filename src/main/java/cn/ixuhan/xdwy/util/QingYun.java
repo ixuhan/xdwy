@@ -1,5 +1,7 @@
 package cn.ixuhan.xdwy.util;
 
+import cn.ixuhan.xdwy.model.VoteItemExample;
+import cn.ixuhan.xdwy.service.impl.VoteItemServiceImpl;
 import net.sf.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,9 +43,5 @@ public class QingYun {
             return content;
         }
         return "您发的信息出错了!";
-    }
-
-    public static void main(String args[]){
-        System.out.println("http://wx.qlogo.cn/mmopen/eTBFF2uBxbAH5IhygqicKGsupu2HYxFlyFaFicxmfPl6icLc3ajzFRRo0ODaFKhVAiaicJdqS0lu09U9cOibQ3fmcQCA/0".split("/")[4]);
     }
 }

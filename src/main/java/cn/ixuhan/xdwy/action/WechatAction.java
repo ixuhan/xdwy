@@ -1,5 +1,6 @@
 package cn.ixuhan.xdwy.action;
 
+import cn.ixuhan.xdwy.service.VoteItemService;
 import cn.ixuhan.xdwy.util.MessageAnalyze;
 import cn.ixuhan.xdwy.util.WechatConfirm;
 import cn.ixuhan.xdwy.util.WechatInfo;
@@ -9,6 +10,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -27,6 +29,8 @@ import java.util.Map;
 @Controller
 @Scope("prototype")
 public class WechatAction extends BaseSupport {
+    @Autowired
+    private MessageAnalyze messageAnalyze;
 
     private static String APPID;
     private static String SECRET;
@@ -56,11 +60,11 @@ public class WechatAction extends BaseSupport {
         } else {//POST请求，用于接收微信消息
             getRequest().setCharacterEncoding("UTF-8");
             getResponse().setCharacterEncoding("UTF-8");
-            MessageAnalyze.Message(getRequest(), getResponse());//解析消息内容
+            messageAnalyze.Message(getRequest(), getResponse());//解析消息内容
         }
     }
-/*
-    *//**
+
+    /**
      * 重定向后跳转投票页面，由菜单的连接重定向至该方法，方法从url中得到code参数后，
      * 再次获取openid和token，再由token获取nickname。
      * openid和nickname为全局变量
@@ -68,6 +72,8 @@ public class WechatAction extends BaseSupport {
      * @return 返回到voteInfo
      *//*
     @Action(value = "weChatVote", results = {@Result(name = "success", location = "/jsp/voteInfo.jsp")})
+     */
+    /*@Action(value = "weChatVote", results = {@Result(name = "success", location = "/jsp/voteInfo.jsp")})
     public String weChatInit() {
         APPID = WechatInfo.getAPPID();
         SECRET = WechatInfo.getSECRET();
@@ -108,13 +114,5 @@ public class WechatAction extends BaseSupport {
             System.out.println("cant touch url");
         }
         return SUCCESS;
-    }
-
-
-    //测试
-    @Action(value = "vote", results = {@Result(name = "success", location = "/index.jsp")})
-    public String test() {
-
-        return "success";
     }*/
 }

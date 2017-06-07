@@ -1,6 +1,4 @@
 import cn.ixuhan.xdwy.util.WechatInfo;
-import net.sf.json.JSONObject;
-import net.sf.json.xml.XMLSerializer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,8 +16,8 @@ import java.net.URLConnection;
 public class Menu {
     public static void main(String args[]) throws Exception {
         //urlEncode编码
-        String redirect_uri = "http%3a%2f%2fxdwy.ixuhan.cn%2fweChatVote.do";
-        String uri = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + WechatInfo.getAPPID() + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        String redirect_uri = "http%3a%2f%2fxdwy.ixuhan.cn%2findex.do";
+        String uri = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + WechatInfo.getAPPID() + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
         String menu_String = "{\n" +
                 "    \"button\": [\n" +
                 "        {\n" +

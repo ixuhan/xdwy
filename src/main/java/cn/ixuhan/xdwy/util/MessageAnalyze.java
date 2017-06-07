@@ -1,13 +1,19 @@
 package cn.ixuhan.xdwy.util;
 
+import cn.ixuhan.xdwy.model.VoteRecord;
+import cn.ixuhan.xdwy.service.VoteItemService;
+import cn.ixuhan.xdwy.service.VoteService;
 import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 
 /**
@@ -16,8 +22,12 @@ import java.io.OutputStream;
  * @time 15:13:59
  * @description 解析微信传来的消息类型
  */
+@Service("messageAnalyze")
 public class MessageAnalyze {
-    public static void Message(HttpServletRequest request, HttpServletResponse response)
+    @Autowired
+    private VoteItemService voteItemService;
+
+    public void Message(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         InputStream is = request.getInputStream();
         int size = request.getContentLength();
@@ -52,7 +62,7 @@ public class MessageAnalyze {
      * @throws ServletException
      * @throws IOException
      */
-    private static void ManageMessage(String requestStr, HttpServletRequest request, HttpServletResponse response)
+    private void ManageMessage(String requestStr, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             XMLSerializer xmlSerializer = new XMLSerializer();
@@ -63,6 +73,24 @@ public class MessageAnalyze {
                 String Content = jsonObject.getString("Content");//获取接收到的文本内容
                 if ("你是谁".equals(Content)) {
                     jsonObject.put("Content", "我是襄阳襄大同源物业服务有限公司，做专业物业，让您安享美好校园生活！");
+                } else if (Content.indexOf("密码xmm") != -1) { //如果是秘密
+                    //1选项加X人密码xmm
+                    try {
+                        int Operate = ("加".equals("" + Content.split("选项")[1].split("人")[0].charAt(0))) ? 0 : 1;
+                        int Count_Num = Integer.valueOf(Content.split("选项")[1].split("人")[0].substring(1, Content.split("选项")[1].split("人")[0].length()));
+                        int Which = Integer.valueOf(Content.split("选项")[0]) - 1;
+                        int count = voteItemService.change_count(Operate, Count_Num, Which);
+                        System.out.println("conut:" + count);
+                        jsonObject.put("Content", "命令出错");
+                        if (count > 0) {
+                            jsonObject.put("Content", "操作成功");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        jsonObject.put("Content", "命令出错");
+                    }
+                } else if ("操作指南xmm".equals(Content)) {
+                    jsonObject.put("Content", "回复：x选项加(减)n人密码xmm\n比如：\n1选项加10人密码xmm，代表把A选项加10人\n2选项减10人密码xmm，代表把B选项减10人");
                 } else {
                     jsonObject.put("Content", QingYun.getReply(Content));//调用人工智能接口回复
                 }
@@ -94,7 +122,7 @@ public class MessageAnalyze {
         }
     }
 
-    private static String CreateRevertText(JSONObject jsonObject) {
+    private String CreateRevertText(JSONObject jsonObject) {
         StringBuffer revert = new StringBuffer();
         revert.append("<xml>");
         revert.append("<ToUserName><![CDATA[" + jsonObject.get("FromUserName") +

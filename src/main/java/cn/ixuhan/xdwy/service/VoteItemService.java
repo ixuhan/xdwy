@@ -23,4 +23,9 @@ public interface VoteItemService {
      * @param vItemId 选项Id
      */
     void updateVoteItemRealCount(int count, int vItemId);
+
+    /**
+     * 改变fake_count数量
+     */
+    public Integer change_count(int Operate,int Count_Num,int Which);
 }

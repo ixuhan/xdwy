@@ -134,6 +134,7 @@
      * ajax提交表单
      */
     function record() {
+        alert($("input[name=vItemId]:checked").val());
         $.ajax(
             {
                 type: "POST",
@@ -142,6 +143,7 @@
                 data: {"vItemId": $("input[name=vItemId]:checked").val()},
                 async: true,
                 success: function (data) {
+                    alert(1);
                     toastr.option = {
                         positionClass: "toast-top-full-width"
                     };
