@@ -27,4 +27,18 @@ public interface VoteItemMapper {
     int updateByPrimaryKeySelective(VoteItem record);
 
     int updateByPrimaryKey(VoteItem record);
+
+    /**
+     * 计算总投票数
+     * @param voteId
+     * @return
+     */
+    int sumRealAndFakeCount(int voteId);
+
+    /**
+     * 更新投票真实记录
+     * @param count 需要新增的数目
+     * @param vItemId 选项Id
+     */
+    void updateVoteItemRealCount(@Param("count") int count, @Param("id") int vItemId);
 }

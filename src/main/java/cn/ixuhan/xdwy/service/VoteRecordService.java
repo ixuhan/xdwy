@@ -18,6 +18,4 @@ public interface VoteRecordService {
 
     void insertVoteRecord(VoteRecord voteRecord);
 
-
-
 }

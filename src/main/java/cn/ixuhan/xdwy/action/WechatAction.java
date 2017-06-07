@@ -59,14 +59,14 @@ public class WechatAction extends BaseSupport {
             MessageAnalyze.Message(getRequest(), getResponse());//解析消息内容
         }
     }
-
-    /**
+/*
+    *//**
      * 重定向后跳转投票页面，由菜单的连接重定向至该方法，方法从url中得到code参数后，
      * 再次获取openid和token，再由token获取nickname。
      * openid和nickname为全局变量
      *
      * @return 返回到voteInfo
-     */
+     *//*
     @Action(value = "weChatVote", results = {@Result(name = "success", location = "/jsp/voteInfo.jsp")})
     public String weChatInit() {
         APPID = WechatInfo.getAPPID();
@@ -116,5 +116,5 @@ public class WechatAction extends BaseSupport {
     public String test() {
 
         return "success";
-    }
+    }*/
 }

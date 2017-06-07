@@ -3,13 +3,12 @@ package cn.ixuhan.xdwy.action;
 import cn.ixuhan.xdwy.model.Vote;
 import cn.ixuhan.xdwy.model.VoteItem;
 import cn.ixuhan.xdwy.model.VoteRecord;
+import cn.ixuhan.xdwy.service.VoteItemService;
 import cn.ixuhan.xdwy.service.VoteRecordService;
 import cn.ixuhan.xdwy.service.VoteService;
 import cn.ixuhan.xdwy.util.WechatInfo;
 import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
-import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,13 +19,14 @@ import java.util.List;
 /**
  * Created by Hill on 2017/6/5.
  */
-@Namespace("/vote")
 public class VoteAction extends BaseSupport{
 
     @Autowired
     private VoteService voteService;
     @Autowired
     private VoteRecordService voteRecordService;
+    @Autowired
+    private VoteItemService voteItemService;
 
     //属性
     private static String OPENID;
@@ -35,7 +35,7 @@ public class VoteAction extends BaseSupport{
     /**
      * 投票主页
      */
-    @Action(value = "index",results = {@Result(name = "success", type="freemarker", location = "/html/voteInfo.html")})
+    @Action(value = "index",results = {@Result(name = "success", type="freemarker", location = "/WEB-INF/html/voteInfo.html")})
     public String vote(){
         try {
             //从url中获得code
@@ -50,11 +50,38 @@ public class VoteAction extends BaseSupport{
             OPENID = json.getString("OPENID");
             NICKNAME = json.getString("NICKNAME");*/
 
+            OPENID = "1216";
+            //计算所有项目总投票数 A1.fake+A1.real +...
+            int totalCount = voteItemService.sumRealAndFakeCount(voteId);
+            getRequest().setAttribute("totalCount",totalCount);
+            //数据库中查找openid是否已达最大投票数目
+
+            int maxVoteCount = voteService.getMaxVoteCount(voteId);//投票最大数目
+            long votedCount = voteRecordService.checkMaxVoteCount(OPENID, "vote", voteId);//当前已投数目
+
             //获取投票相关信息用于展示
             List<VoteItem> voteItems = voteService.getVoteItemsByVoteId(voteId);
             Vote vote = voteService.getVoteById(voteId);
             getRequest().setAttribute("vote",vote);
             getRequest().setAttribute("voteItems",voteItems);
+
+            if (votedCount < maxVoteCount)
+            {
+                getRequest().setAttribute("voteRemain",maxVoteCount-votedCount);
+            }
+            else
+            {
+                JSONObject itemStatus = new JSONObject();
+                //投票数目已达最大值，直接显示结果
+                for (VoteItem item:voteItems)
+                {
+                    int count = item.getFakeCount() + item.getRealCount();
+                    itemStatus.put(item.getId() + "", Math.round(count*10000/totalCount)/100.0+"%");
+                }
+                getRequest().setAttribute("itemStatus",itemStatus);
+            }
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,8 +97,8 @@ public class VoteAction extends BaseSupport{
     @Action(value = "record")
     public String record()
     {
-        OPENID = "1212";
-        NICKNAME = "小强";
+        OPENID = "1216";
+        NICKNAME = "小刚";
         //OPENID存在且不为空说明当前投票人员是正确认证的
         if (null != OPENID && !OPENID.equals(""))
         {
@@ -95,6 +122,8 @@ public class VoteAction extends BaseSupport{
                     record.setVoteId(voteId);
                     record.setVitemId(vItemId);
                     voteRecordService.insertVoteRecord(record);
+                    //将投票记录在item中
+                    voteItemService.updateVoteItemRealCount(1,vItemId);
                 }
                 else
                 {
@@ -114,7 +143,7 @@ public class VoteAction extends BaseSupport{
             //将结果输出到前台
             getResponse().setHeader("Content-type", "text/html;charset=UTF-8");
             PrintWriter writer = getResponse().getWriter();
-            writer.write(msg);
+            writer.write("{\"msg\":\""+msg+"\"}");
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();

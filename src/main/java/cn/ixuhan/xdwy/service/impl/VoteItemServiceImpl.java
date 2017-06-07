@@ -10,11 +10,11 @@ import javax.annotation.Resource;
 /**
  * Created by hank on 2017/6/4 0004.
  */
-@Service("voteItemsService")
+@Service("voteItemService")
 public class VoteItemServiceImpl implements VoteItemService {
 
     @Resource
-    private VoteItemMapper voteItemsMapper;
+    private VoteItemMapper voteItemMapper;
 
     public VoteRecord getVoteRecordById(int id) {
         return null;
@@ -22,5 +22,14 @@ public class VoteItemServiceImpl implements VoteItemService {
 
     public long checkMaxVoteCount(String openid, int voteId) {
         return 0;
+    }
+
+    public int sumRealAndFakeCount(int voteId) {
+        int totalCount = voteItemMapper.sumRealAndFakeCount(voteId);
+        return totalCount;
+    }
+
+    public void updateVoteItemRealCount(int count, int vItemId) {
+        voteItemMapper.updateVoteItemRealCount(count,vItemId);
     }
 }

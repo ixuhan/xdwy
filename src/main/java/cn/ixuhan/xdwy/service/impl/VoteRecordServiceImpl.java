@@ -43,4 +43,5 @@ public class VoteRecordServiceImpl implements VoteRecordService {
         voteRecordMapper.insert(voteRecord);
     }
 
+
 }

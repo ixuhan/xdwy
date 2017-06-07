@@ -37,6 +37,7 @@ public class VoteServiceImpl implements VoteService {
     public List<VoteItem> getVoteItemsByVoteId(int voteId) {
         VoteItemExample example = new VoteItemExample();
         example.createCriteria().andVoteIdEqualTo(voteId);
+        example.setOrderByClause("weight");
         return voteItemMapper.selectByExample(example);
     }
 }

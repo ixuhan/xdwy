@@ -335,4 +335,15 @@
       valid = #{valid,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="sumRealAndFakeCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT
+    SUM(real_count+fake_count)
+    FROM vote_item
+    WHERE vote_id = #{voteId}
+  </select>
+  <update id="updateVoteItemRealCount">
+    UPDATE vote_item
+    SET real_count = real_count + #{count,jdbcType=INTEGER}
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>
