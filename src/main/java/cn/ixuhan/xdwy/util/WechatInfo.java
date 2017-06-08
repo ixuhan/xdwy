@@ -92,6 +92,30 @@ public class WechatInfo {
         return returnDate;
     }
 
+    public static String getHeadImg(String access, String OPENID) {
+        System.out.println("进入headImg");
+        String headimgurl = "";
+        try {
+            String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access + "&openid=" + OPENID + "&lang=zh_CN";
+            System.out.println(url);
+            Document doc = Jsoup.connect(url).get();
+            String html = doc.body().html().toString();
+            Gson gson = new Gson();
+            Map map = gson.fromJson(html, HashMap.class);
+
+            headimgurl = map.get("headimgurl").toString();
+
+            if (headimgurl != null && !"".equals(headimgurl)) {
+                headimgurl = "http://wx.qlogo.cn/mmopen/" + headimgurl.split("/")[4] + "/46";
+                System.out.println(headimgurl);
+            }
+        } catch (IOException io) {
+            System.out.println(io.getMessage());
+            System.out.println("cant touch url");
+        }
+        return headimgurl;
+    }
+
     //返回APPID
     public static String getAPPID() {
         return APPID;
@@ -107,31 +131,30 @@ public class WechatInfo {
         return TOKEN;
     }
 
-    public static JSONObject getOpenIdAndToken(String code)
-    {
+    public static JSONObject getOpenIdAndToken(String code) {
         JSONObject json = new JSONObject();
         String OPENID = "";
         String NICKNAME = "";
-        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+APPID+"&secret="+SECRET+"&code="+code+"&grant_type=authorization_code";
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + APPID + "&secret=" + SECRET + "&code=" + code + "&grant_type=authorization_code";
         try {
             Document doc = Jsoup.connect(url).get();
             //返回网页内容
             String html = doc.body().html().toString();
             JSONObject object = new JSONObject(html);
 
-            String access_token = object.getString("access_token");
+            String access = object.getString("access_token");
             OPENID = object.getString("openid");
-            json.put("OPENID",OPENID);
+            json.put("OPENID", OPENID);
 
             //继续访问获取用户昵称
-            String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+OPENID+"&lang=zh_CN";
+            String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access + "&openid=" + OPENID + "&lang=zh_CN";
             doc = Jsoup.connect(url2).get();
             html = doc.body().html().toString();
             object = new JSONObject(html);
             NICKNAME = object.getString("nickname");
-            json.put("NICKNAME",NICKNAME);
-
-        }catch (IOException io){
+            json.put("NICKNAME", NICKNAME);
+            json.put("access", access);
+        } catch (IOException io) {
             System.out.println(io.getMessage());
             System.out.println("can't touch url");
         } catch (JSONException e) {

@@ -18,11 +18,9 @@ public class VoteCommentServiceImpl implements VoteCommentService {
     @Resource
     private VoteCommentMapper voteCommentMapper;
 
-    public List<VoteComment> getVoteCommentByVoteIdAndLimit(int voteId, int offset) {
+    public List<VoteComment> getVoteCommentByVoteId(int voteId) {
         VoteCommentExample example = new VoteCommentExample();
-        example.setOffset(offset);
-        example.setLimit(offset+1);
-        example.setOrderByClause("create_time desc");
+        example.setOrderByClause("TOPTOP DESC , create_time DESC");
         example.createCriteria().andVoteIdEqualTo(voteId).andValidEqualTo((byte) 1);
         return voteCommentMapper.selectByExample(example);
     }

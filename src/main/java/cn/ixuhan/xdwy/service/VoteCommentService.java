@@ -12,10 +12,9 @@ public interface VoteCommentService {
     /**
      * 根据投票id和评论起始位置获取评论，每次获取后10条
      * @param voteId 投票id
-     * @param Limit 评论起始位置索引
      * @return
      */
-    public List<VoteComment> getVoteCommentByVoteIdAndLimit(int voteId, int Limit);
+    public List<VoteComment> getVoteCommentByVoteId(int voteId);
 
     /**
      * 保存投票评论

@@ -1,3 +1,5 @@
+import cn.ixuhan.xdwy.model.VoteComment;
+import cn.ixuhan.xdwy.service.VoteCommentService;
 import cn.ixuhan.xdwy.service.VoteItemService;
 import cn.ixuhan.xdwy.service.VoteService;
 import org.junit.Test;
@@ -7,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +26,8 @@ public class test01 {
     private VoteService voteService;
     @Autowired
     private VoteItemService voteItemService;
+    @Autowired
+    private VoteCommentService voteCommentService;
 
     @Test
     public void test1(){
@@ -36,4 +41,11 @@ public class test01 {
         System.out.println("nihao");
     }
 
+    @Test
+    public void test2(){
+        List<VoteComment> voteComments = voteCommentService.getVoteCommentByVoteId(1);
+        for (VoteComment voteComment : voteComments){
+            System.out.println(voteComment.getContent());
+        }
+    }
 }

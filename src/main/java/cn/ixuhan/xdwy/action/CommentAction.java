@@ -14,7 +14,7 @@ import java.util.List;
  * 评论处理相关
  */
 @Controller
-public class CommentAction extends BaseSupport{
+public class CommentAction extends BaseSupport {
 
     @Resource
     private VoteCommentService voteCommentService;
@@ -25,13 +25,13 @@ public class CommentAction extends BaseSupport{
      * 返回评论列表,分页显示，每次显示10条
      * @return
      */
-    @Action(value = "comments")
+    /*@Action(value = "comments")
     public String getVoteCommentList()
     {
         try {
             int voteId = Integer.parseInt(getRequest().getParameter("voteId"));
             int offset = Integer.parseInt(getRequest().getParameter("offset"));
-            List<VoteComment> commentsList = voteCommentService.getVoteCommentByVoteIdAndLimit(voteId, offset);
+            List<VoteComment> commentsList = voteCommentService.getVoteCommentByVoteId(voteId);
             Gson gson = new Gson();
             String json = gson.toJson(commentsList);
             getResponse().getWriter().write(json);
@@ -39,20 +39,20 @@ public class CommentAction extends BaseSupport{
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     /**
      * 添加投票评论
+     *
      * @return
      */
     @Action(value = "addComment")
-    public String addVoteComment()
-    {
+    public String addVoteComment() {
         try {
             System.out.println(voteComment.getContent());
-            voteComment.setValid((byte)0);
+            voteComment.setValid((byte) 0);
             voteCommentService.saveVoteComment(voteComment);
-            getResponse().getWriter().write("{\"msg\":\""+msg+"\"}");
+            getResponse().getWriter().write("{\"msg\":\"" + msg + "\"}");
         } catch (IOException e) {
             e.printStackTrace();
         }

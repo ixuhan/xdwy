@@ -86,14 +86,6 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -117,7 +109,7 @@
     </selectKey>
     insert into vote_comment (vote_id, user_img, openid, 
       nickname, content,  valid)
-    values (#{voteId,jdbcType=INTEGER}, #{userImg,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR},   #{nickname,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}#{valid,jdbcType=TINYINT})
+    values (#{voteId,jdbcType=INTEGER}, #{userImg,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR},   #{nickname,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},#{valid,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="cn.ixuhan.xdwy.model.VoteComment">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
