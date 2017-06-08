@@ -21,6 +21,20 @@
             padding: 0;
         }
 
+        a:link, a:hover, a:active,a:visited{
+            color: #4395F5;
+            text-decoration: none;
+        }
+
+        #mask{
+            display: none;
+            position: absolute;
+            top: 0px;
+            background-color: #ffffff;
+            z-index: 1002;
+            left: 0px;
+        }
+
         #voteArea {
             width: 300px;
             margin: 20px auto;
@@ -54,6 +68,16 @@
             margin-bottom: 10px;
             font-size: 17px;
         }
+
+        #commentPage{
+            display: none;
+            position: absolute;
+            top: 0px;
+            background-color: #ffffff;
+            z-index: 1003;
+            left: 0px;
+            padding:10px;
+        }
     </style>
 </head>
 <body onload="showStatus()">
@@ -77,17 +101,6 @@
         </section>
     </section>
     <p style="line-height: 25.6px;white-space: normal;"><br></p>
-    <p style="white-space: normal; line-height: 2em;"><strong>&nbsp;&nbsp;<span
-            style="font-size: 14px;">&nbsp;${vote.description}</span></strong></p>
-    <p style="line-height: 25.6px; white-space: normal; text-align: center;">
-        <img data-s="300,640" data-type="jpeg" data-src="http://mmbiz.qpic.cn/mmbiz_jpg/iaBiajMRl1HOubmkcRNxS7LncoNz33YGdstwVN1ShuV8MftE3TicIt1yIUurbrC4cQLZRnia9tUhDNjQWRCRrvjXtQ/0?wx_fmt=jpeg" class=" " data-ratio="0.680327868852459" data-w="366" src="http://mmbiz.qpic.cn/mmbiz_jpg/iaBiajMRl1HOubmkcRNxS7LncoNz33YGdstwVN1ShuV8MftE3TicIt1yIUurbrC4cQLZRnia9tUhDNjQWRCRrvjXtQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" style="width: auto !important; height: auto !important; visibility: visible !important;" data-fail="0">
-    </p>
-    <section data-role="outer" label="Powered by 135editor.com" style="font-size: 16px; line-height: 25.6px; white-space: normal; font-family: 微软雅黑;"><section class="" data-tools="135编辑器" data-id="89175" style="border: 0px none; box-sizing: border-box;"><section class="" style="margin: 10px auto; padding-top: 3px; border-top-width: 2px; border-top-style: solid; border-top-color: rgb(117, 117, 118); box-sizing: border-box;"><section style="padding-top: 5px; padding-bottom: 5px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(117, 117, 118); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(117, 117, 118); font-weight: bold; font-size: 18px; box-sizing: border-box;"><p class="" data-brushtype="text" style="text-align: center;">投票规则</p></section></section></section><ol class="list-paddingleft-2" style="width: 528.188px;"><li><section data-role="outer" label="Powered by 135editor.com"><p>本次活动每个微信号仅可进行一次投票活动（只需投票一次）</p></section></li><li><section data-role="outer" label="Powered by 135editor.com"><p><span style="font-family: 微软雅黑; font-size: 16px; line-height: 25.6px;">只能选取一个节目进行投票</span></p></section></li><li><section data-role="outer" label="Powered by 135editor.com"><p>投票成功后即可见目前投票结果</p></section></li><li><section data-role="outer" label="Powered by 135editor.com"><p>爸爸妈妈可通过分享链接获取更多投票</p></section></li><li><section data-role="outer" label="Powered by 135editor.com"><p>投票时间截止日期为：6月6日 0:00</p></section></li><li><section data-role="outer" label="Powered by 135editor.com"><p>本次活动已经开启防刷票保护功能，恶意刷票将直接取消获奖资格</p></section></li><li><section data-role="outer" label="Powered by 135editor.com"><p>本活动最终解释权归新乔教育集团所所有</p></section></li></ol></section>
-
-    <section class="" data-tools="135编辑器" data-id="87691" style="border: 0px none; box-sizing: border-box;"><p style="text-align: center;"><img class="" data-ratio="0.06521739130434782" data-src="http://mmbiz.qpic.cn/mmbiz/ziadDDQxbCJFDq1MaoNclaJOpElczibia6UXtxCadkIvdKUiaLVkuVnhkx32A3JCM6I4howpH175pChoFaXn9gKSicA/0?" data-w="690" style="display: inline; width: auto !important; height: auto !important; visibility: visible !important;" title="叶子分割线" src="http://mmbiz.qpic.cn/mmbiz/ziadDDQxbCJFDq1MaoNclaJOpElczibia6UXtxCadkIvdKUiaLVkuVnhkx32A3JCM6I4howpH175pChoFaXn9gKSicA/0?tp=webp&amp;wxfrom=5&amp;wx_lazy=1" data-fail="0"></p></section>
-
-
-
 
     <form id="${vote.id}" method="post" action="record.do">
         <input type="hidden" name="voteId" value="${vote.id}">
@@ -107,6 +120,24 @@
     <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
          style="width:20%">20%
     </div>
+</div>
+<a href="javascript:void(0)" onclick="showCommentPage()" style="font-size: 16px">写留言<span style="font-size: 12px" class="glyphicon glyphicon-pencil"></span></a>
+<div id="mask"></div>
+<div id="commentPage">
+    <div class="title">${vote.name}</div>
+    <textarea id="comm_content" name="voteComment.content" class="content" placeholder="留言将由公众号筛选后显示，对所有人可见。"></textarea>
+    <input type="button" value="提交" onclick="addVoteComment()"/>
+</div>
+
+
+<div class="comm_list" id="comm_list">
+    <!--<div class="comment">
+        <img src="" style="width: 100px;height: 100px"/>
+        <p class="nickname"></p>
+        <p class="comm_content"></p>
+        <p class="comm_time"></p>
+    </div>-->
+    <div class="comment"></div>
 </div>
 </body>
 <script>
@@ -158,5 +189,95 @@
                 }
             });
     }
+
+/*    getComments();
+    /!**
+     * 获得所有评论，ajax引入
+     *!/
+    function getComments(offset) {
+        $.ajax({
+            type:"POST",
+            url:"comments.do",
+            dataType:"json",
+            data:{"voteId":"${vote.id}","offset":offset},
+            success:function(data){
+                return data;
+            }
+        })
+    }*/
+
+    /**
+     * 显示遮罩层用于评论
+     */
+    function showMask()
+    {
+        $("#mask").css("height",$(document).height());
+        $("#mask").css("width",$(document).width());
+        $("#mask").show();
+    }
+
+    /**
+     * 显示评论输入框
+     */
+    function showCommentPage() {
+        showMask();
+        $("#commentPage").show();
+    }
+
+    /**
+     * 提交评论
+     */
+    function addVoteComment(){
+        $.ajax({
+            type: "POST",
+            url:"addComment.do",
+            dataType:"json",
+            data:{"voteComment.content":$("#comm_content").val(),"voteComment.openid":"${openid}","voteComment.nickname":"${nickname}","voteComment.userImg":"${userImg}","voteComment.voteId":"${vote.id}"},
+            async:"true",
+            success:function (data) {
+                alert(data);
+            }
+        });
+    }
+    /**
+     * 显示评论
+     */
+    var comm_index = 0;
+    showComments(comm_index);
+    function showComments(offset){
+        var html;
+        $.ajax({
+            type:"POST",
+            url:"comments.do",
+            dataType:"json",
+            data:{"voteId":"${vote.id}","offset":offset},
+            success:function(comments){
+                var showStr;
+                if (comments!="")
+                {
+                    for (var i = 0; i<comments.length; i++)
+                    {
+                        html = " <div class=\"comment\">"
+                            +"<div style='color:#4395F5;cursor:pointer;float: right'><span class='glyphicon glyphicon-thumbs-up'  onclick='toptop()'></span><span>&nbsp;&nbsp;"+comments[i].toptop+"</span></div>"
+                            +"<img src="+comments[i].userImg+" style=\"width: 40px;height: 40px\"/>"
+                            +"<p class=\"nickname\">"+comments[i].nickname+"</p>"
+                            +"<p class=\"comm_content\">"+comments[i].content+"</p>"
+                            +"<p class=\"comm_time\">"+comments[i].createTime+"</p>"
+                            +"</div>";
+                    }
+                    comm_index += 1;
+                    showStr = "<div id='show_more'><a href='javascript:void(0)' onclick='showComments("+comm_index+")'>显示更多...</a></div>";
+                }
+                else
+                {
+                    //没有更多了
+                    showStr = "<div id='show_more'>没有更多了...</div>"
+                }
+                $("#show_more").remove();
+                $("#comm_list").find(".comment").last().after(showStr).after(html);
+            }
+        })
+    }
+
 </script>
 </html>

@@ -62,6 +62,10 @@ public class VoteAction extends BaseSupport{
             Vote vote = voteService.getVoteById(voteId);
             getRequest().setAttribute("vote",vote);
             getRequest().setAttribute("voteItems",voteItems);
+            getRequest().setAttribute("openid",OPENID);
+            getRequest().setAttribute("nickname",OPENID);
+            //getRequest().setAttribute("userImg","head.jpg");
+            getRequest().setAttribute("userImg",json.getString("headimgurl"));
 
             if (votedCount < maxVoteCount)
             {
@@ -96,19 +100,17 @@ public class VoteAction extends BaseSupport{
     public String record()
     {
         System.out.println("进入record");
-        OPENID = "1216";
-        NICKNAME = "小刚";
+        /*OPENID = "1216";
+        NICKNAME = "小刚";*/
         //OPENID存在且不为空说明当前投票人员是正确认证的
         if (null != OPENID && !OPENID.equals(""))
         {
             System.out.println("voteId:" + voteId);
             System.out.println("voteId:" + getRequest().getParameter("voteId"));
+            voteId = Integer.parseInt(getRequest().getParameter("voteId"));
             //判断是否达到投票最大限制
-            voteId = 1;
             int maxVoteCount = voteService.getMaxVoteCount(voteId);//投票最大数目
             long votedCount = voteRecordService.checkMaxVoteCount(OPENID, "vote", voteId);//当前已投数目
-            System.out.println("maxVoteCount:" + maxVoteCount);
-            System.out.println("votedCount:" + votedCount);
             if (votedCount < maxVoteCount)
             {
                 //获取投票选项id

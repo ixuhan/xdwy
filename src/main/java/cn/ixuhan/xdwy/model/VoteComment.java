@@ -1,12 +1,23 @@
 package cn.ixuhan.xdwy.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author 
  */
 public class VoteComment implements Serializable {
     private Integer id;
+
+    /**
+     * 评论所属投票id
+     */
+    private Integer voteId;
+
+    /**
+     * 用户头像
+     */
+    private String userImg;
 
     /**
      * 用户ID
@@ -22,6 +33,11 @@ public class VoteComment implements Serializable {
      * 评论内容
      */
     private String content;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
     /**
      * 点赞数量
@@ -41,6 +57,22 @@ public class VoteComment implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVoteId() {
+        return voteId;
+    }
+
+    public void setVoteId(Integer voteId) {
+        this.voteId = voteId;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 
     public String getOpenid() {
@@ -65,6 +97,14 @@ public class VoteComment implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Integer getToptop() {
