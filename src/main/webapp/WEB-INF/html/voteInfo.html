@@ -144,9 +144,14 @@
     <div class="comments">
         <#list voteComments as voteComment>
             <div class="comment">
-                <div style='color:#4395F5;cursor:pointer;float: right'><span class='glyphicon glyphicon-thumbs-up'  onclick='toptop()'></span><span>&nbsp;&nbsp;${voteComment.toptop}</span></div>
                 ${voteComment.nickname}
                 ${voteComment.content}
+                <#if (voteComment.had_top)!=1>
+                    <div onclick='topup(this,${voteComment.id})' style='color:#4395F5;cursor:pointer;float: right'><span  class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span class="top-count">${voteComment.top_count}</span></div>
+                    <#else>
+                        <div onclick='topdown(this,${voteComment.id})' style='color:#43F595;cursor:pointer;float: right'><span  class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span class="top-count">${voteComment.top_count}</span></div>
+                </#if>
+
             </div>
         </#list>
     </div>
@@ -252,6 +257,47 @@
             }
         });
     }
+
+
+    function topdown(obj,id) {
+        $.ajax({
+            type: "POST",
+            url:"topdown.do",
+            dataType:"json",
+            data:{"comm_id":id,"openid":"${openid}"},
+            async:"true",
+            success:function (data) {
+                if(data.msg == "ok")
+                {
+                    debugger;
+                    var count = $(obj).find(".top-count").text();
+                    $(obj).find(".top-count").text(parseInt(count)-1);
+                    $(obj).css("color","#4395F5").attr("onclick","topup(this,"+id+")");
+                }
+            }
+        })
+    }
+
+    function topup(obj,id) {
+        $.ajax({
+            type: "POST",
+            url:"topup.do",
+            dataType:"json",
+            data:{"comm_id":id,"openid":"${openid}"},
+            async:"true",
+            success:function (data) {
+                if(data.msg == "ok")
+                {
+                    debugger;
+                    var count = $(obj).find(".top-count").text();
+                    $(obj).find(".top-count").text(parseInt(count)+1);
+                    $(obj).css("color","#43F595").attr("onclick","topdown(this,"+id+")");
+                }
+            }
+        })
+    }
+
+
     /**
      * 显示评论
      */

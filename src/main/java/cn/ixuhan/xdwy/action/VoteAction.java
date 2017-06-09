@@ -50,17 +50,23 @@ public class VoteAction extends BaseSupport {
             //从url中获得code
             String code = getRequest().getParameter("code");
             //从url中获得state参数，标识投票id
-            voteId = Integer.parseInt(getRequest().getParameter("state"));
+            //测试数据
+            voteId = 1;
+            //voteId = Integer.parseInt(getRequest().getParameter("state"));
             System.out.println(this);
             System.out.println("voteId1:" + voteId);
             System.out.println("获取到的code为" + code);
             //发送请求获取token和openid
-            JSONObject json = WechatInfo.getOpenIdAndToken(code);
+            /*JSONObject json = WechatInfo.getOpenIdAndToken(code);
             OPENID = json.getString("OPENID");
             NICKNAME = json.getString("NICKNAME");
             String access = json.getString("access");
 
-            String headImg = WechatInfo.getHeadImg(access, OPENID);
+            String headImg = WechatInfo.getHeadImg(access, OPENID);*/
+            //测试数据
+            String headImg = "head.jpg";
+            OPENID = "1212";
+            NICKNAME = "小明";
 
             //计算所有项目总投票数 A1.fake+A1.real +...
             int totalCount = voteItemService.sumRealAndFakeCount(voteId);
@@ -79,7 +85,8 @@ public class VoteAction extends BaseSupport {
             getRequest().setAttribute("headImg",headImg);
             getRequest().setAttribute("openid",OPENID);
 
-            List<VoteComment> voteComments = voteCommentService.getVoteCommentByVoteId(1);
+            List<VoteComment> voteComments = voteCommentService.getVoteCommentByVoteId(OPENID,1);
+
             getRequest().setAttribute("voteComments",voteComments);
 
             if (votedCount < maxVoteCount) {

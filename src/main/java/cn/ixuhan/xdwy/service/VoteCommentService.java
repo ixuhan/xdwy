@@ -14,7 +14,7 @@ public interface VoteCommentService {
      * @param voteId 投票id
      * @return
      */
-    public List<VoteComment> getVoteCommentByVoteId(int voteId);
+    public List<VoteComment> getVoteCommentByVoteId(String openid,int voteId);
 
     /**
      * 保存投票评论

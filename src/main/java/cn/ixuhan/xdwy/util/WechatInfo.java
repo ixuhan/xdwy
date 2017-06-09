@@ -154,6 +154,7 @@ public class WechatInfo {
             NICKNAME = object.getString("nickname");
             json.put("NICKNAME", NICKNAME);
             json.put("access", access);
+            json.put("headImg",object.getString("headimgurl"));
         } catch (IOException io) {
             System.out.println(io.getMessage());
             System.out.println("can't touch url");

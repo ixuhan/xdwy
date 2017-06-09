@@ -18,11 +18,8 @@ public class VoteCommentServiceImpl implements VoteCommentService {
     @Resource
     private VoteCommentMapper voteCommentMapper;
 
-    public List<VoteComment> getVoteCommentByVoteId(int voteId) {
-        VoteCommentExample example = new VoteCommentExample();
-        example.setOrderByClause("TOPTOP DESC , create_time DESC");
-        example.createCriteria().andVoteIdEqualTo(voteId).andValidEqualTo((byte) 1);
-        return voteCommentMapper.selectByExample(example);
+    public List<VoteComment> getVoteCommentByVoteId(String openid, int voteId) {
+        return voteCommentMapper.selectCommentWithTopCountAndHadTop(openid, voteId);
     }
 
     public void saveVoteComment(VoteComment voteComment) {
