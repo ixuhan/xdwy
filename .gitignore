@@ -1,3 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
 *.properties
-.idea/
-target/
+/.idea/
+/out/
+/xdwy pro.iml
+/target/

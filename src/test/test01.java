@@ -48,4 +48,8 @@ public class test01 {
             System.out.println(voteComment.get("user_img"));
         }
     }
+
+    @Test
+    public void test3(){
+    }
 }
