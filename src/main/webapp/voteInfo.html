@@ -30,7 +30,7 @@
             display: none;
             position: absolute;
             top: 0px;
-            background-color: #ffffff;
+            background-color: #f8f8f8;
             z-index: 1002;
             left: 0px;
         }
@@ -73,10 +73,14 @@
             display: none;
             position: absolute;
             top: 0px;
-            background-color: #ffffff;
+            background-color: #f8f8f8;
             z-index: 1003;
             left: 0px;
             padding: 10px;
+            width:100%;
+            text-align: center;
+            margin: 0;
+            padding: 0
         }
 
         .image1 {
@@ -96,10 +100,20 @@
             border-right-style: solid;
             border-right-color: rgb(234, 234, 234);
         }
+
+        /*评论输入文本样式*/
+        .content{
+            width:100%;
+            height: 200px;
+            padding: 10px;
+            margin: 10px 0 15px 0;
+            border: none;
+            resize: none;
+        }
     </style>
 </head>
 <body onload="showStatus()">
-<div>
+<div id="navigation">
     <div class="page-content">
         <!--<div>Vote(共${totalCount!}票)</div>-->
         <div class="title">${Session.vote.name}</div><!--标题-->
@@ -161,13 +175,6 @@
 
     <a href="javascript:void(0)" onclick="showCommentPage()" style="font-size: 16px">写留言<span style="font-size: 12px"
                                                                                               class="glyphicon glyphicon-pencil"></span></a>
-    <div id="mask"></div>
-    <div id="commentPage">
-        <div class="title">${Session.vote.name}</div>
-        <textarea id="comm_content" name="voteComment.content" class="content"
-                  placeholder="留言将由公众号筛选后显示，对所有人可见。"></textarea>
-        <input type="button" value="提交" onclick="addVoteComment()"/>
-    </div>
     <div class="comm_list" id="comm_list">
         <div class="comments">
             <#list Session.voteComments as voteComment>
@@ -190,6 +197,13 @@
         </div>
         <div class="comment"></div>
     </div>
+</div>
+<div id="mask"></div>
+<div id="commentPage">
+    <div style="font-size: 18px;margin-top: 10px">${Session.vote.name}</div>
+    <textarea id="comm_content" name="voteComment.content" class="content"
+              placeholder="留言将由公众号筛选后显示，对所有人可见。" oninput="checkSubmit()" maxlength="200"></textarea>
+    <input type="button" id="comm_submit_btn" value="提交" onclick="addVoteComment()" class="btn btn-success" disabled="disabled" style="width: 96%;"/>
 </div>
 </body>
 <script>
@@ -262,9 +276,23 @@
      * 显示遮罩层用于评论
      */
     function showMask() {
-        $("#mask").css("height", $(document).height());
-        $("#mask").css("width", $(document).width());
+        $("#mask").css("height", $(window).height());
+        $("#mask").css("width", $(window).width());
         $("#mask").show();
+    }
+
+    /**
+     * 是否可以提交
+     */
+    function checkSubmit() {
+        debugger;
+        if ($("#comm_content").val().trim()!="") {
+            $("#comm_submit_btn").removeAttr("disabled");
+        }
+        else
+        {
+            $("#comm_submit_btn").attr("disabled", "disabled");
+        }
     }
 
     /**
@@ -272,6 +300,7 @@
      */
     function showCommentPage() {
         showMask();
+        $("#navigation").hide();
         $("#commentPage").show();
     }
 
@@ -291,8 +320,12 @@
                 "voteComment.voteId": "${Session.vote.id}"
             },
             async: "true",
-            success: function (data) {
-                alert(data);
+            success: function () {
+                toastr.success("已提交，等待审核");
+                $("#mask").hide();
+                $("#comm_content").val("");
+                $("#commentPage").hide();
+                $("#navigation").show();
             }
         });
     }
