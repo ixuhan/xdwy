@@ -7,6 +7,7 @@ import cn.ixuhan.xdwy.service.VoteCommentService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class VoteCommentServiceImpl implements VoteCommentService {
     @Resource
     private VoteCommentMapper voteCommentMapper;
 
-    public List<VoteComment> getVoteCommentByVoteId(String openid, int voteId) {
+    public List<HashMap> getVoteCommentByVoteId(String openid, int voteId) {
         return voteCommentMapper.selectCommentWithTopCountAndHadTop(openid, voteId);
     }
 

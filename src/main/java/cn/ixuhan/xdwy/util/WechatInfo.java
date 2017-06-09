@@ -92,30 +92,6 @@ public class WechatInfo {
         return returnDate;
     }
 
-    public static String getHeadImg(String access, String OPENID) {
-        System.out.println("进入headImg");
-        String headimgurl = "";
-        try {
-            String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access + "&openid=" + OPENID + "&lang=zh_CN";
-            System.out.println(url);
-            Document doc = Jsoup.connect(url).get();
-            String html = doc.body().html().toString();
-            Gson gson = new Gson();
-            Map map = gson.fromJson(html, HashMap.class);
-
-            headimgurl = map.get("headimgurl").toString();
-
-            if (headimgurl != null && !"".equals(headimgurl)) {
-                headimgurl = "http://wx.qlogo.cn/mmopen/" + headimgurl.split("/")[4] + "/46";
-                System.out.println(headimgurl);
-            }
-        } catch (IOException io) {
-            System.out.println(io.getMessage());
-            System.out.println("cant touch url");
-        }
-        return headimgurl;
-    }
-
     //返回APPID
     public static String getAPPID() {
         return APPID;
@@ -141,7 +117,7 @@ public class WechatInfo {
             //返回网页内容
             String html = doc.body().html().toString();
             JSONObject object = new JSONObject(html);
-
+            System.out.println(html);
             String access = object.getString("access_token");
             OPENID = object.getString("openid");
             json.put("OPENID", OPENID);
@@ -154,7 +130,14 @@ public class WechatInfo {
             NICKNAME = object.getString("nickname");
             json.put("NICKNAME", NICKNAME);
             json.put("access", access);
-            json.put("headImg",object.getString("headimgurl"));
+            String headimgurl = object.get("headimgurl").toString();
+
+            if (headimgurl != null && !"".equals(headimgurl)) {
+                headimgurl = "http://wx.qlogo.cn/mmopen/" + headimgurl.split("/")[4] + "/46";
+                System.out.println(headimgurl);
+            }
+
+            json.put("headImg", headimgurl);
         } catch (IOException io) {
             System.out.println(io.getMessage());
             System.out.println("can't touch url");

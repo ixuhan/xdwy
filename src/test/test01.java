@@ -30,7 +30,7 @@ public class test01 {
     private VoteCommentService voteCommentService;
 
     @Test
-    public void test1(){
+    public void test1() {
         System.out.println(voteService.getMaxVoteItemCount(1));
         Map<String, Integer> parameterMap = new HashMap<String, Integer>();
         parameterMap.put("Operate", 1);
@@ -42,10 +42,10 @@ public class test01 {
     }
 
     @Test
-    public void test2(){
-        List<VoteComment> voteComments = voteCommentService.getVoteCommentByVoteId(1);
-        for (VoteComment voteComment : voteComments){
-            System.out.println(voteComment.getContent());
+    public void test2() {
+        List<HashMap> voteComments = voteCommentService.getVoteCommentByVoteId("1212", 1);
+        for (HashMap voteComment : voteComments) {
+            System.out.println(voteComment.get("user_img"));
         }
     }
 }

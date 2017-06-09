@@ -3,6 +3,7 @@ package cn.ixuhan.xdwy.data;
 import cn.ixuhan.xdwy.model.VoteComment;
 import cn.ixuhan.xdwy.model.VoteCommentExample;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -30,5 +31,5 @@ public interface VoteCommentMapper {
 
     int updateByPrimaryKey(VoteComment record);
 
-    List<VoteComment> selectCommentWithTopCountAndHadTop(@Param("openid") String openid, @Param("voteId") int voteId);
+    List<HashMap> selectCommentWithTopCountAndHadTop(@Param("openid") String openid, @Param("voteId") int voteId);
 }

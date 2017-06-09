@@ -274,7 +274,7 @@
     FROM vote_comment vc
     LEFT JOIN (SELECT comm_id AS tmp1_cid,COUNT(1) AS top_count FROM vcomment_good GROUP BY comm_id) AS tmp1    ON vc.`id` = tmp1.tmp1_cid
     LEFT JOIN (SELECT comm_id AS tmp2_cid,COUNT(1) AS had_top FROM vcomment_good WHERE openid = #{openid,jdbcType=VARCHAR} GROUP BY comm_id )AS tmp2 ON vc.`id` = tmp2.tmp2_cid
-    WHERE vc.vote_id = #{voteId,jdbcType=INTEGER}
+    WHERE vc.vote_id = #{voteId,jdbcType=INTEGER} AND vc.valid = 1
     ORDER BY tmp1.top_count DESC , vc.create_time DESC
 
   </select>

@@ -2,6 +2,7 @@ package cn.ixuhan.xdwy.service;
 
 import cn.ixuhan.xdwy.model.VoteComment;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public interface VoteCommentService {
      * @param voteId 投票id
      * @return
      */
-    public List<VoteComment> getVoteCommentByVoteId(String openid,int voteId);
+    public List<HashMap> getVoteCommentByVoteId(String openid, int voteId);
 
     /**
      * 保存投票评论

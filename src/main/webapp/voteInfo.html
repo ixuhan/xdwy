@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>满意度调查</title>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+
+
+    <link href="/css/toastr.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        a:link, a:hover, a:active, a:visited {
+            color: #4395F5;
+            text-decoration: none;
+        }
+
+        #mask {
+            display: none;
+            position: absolute;
+            top: 0px;
+            background-color: #ffffff;
+            z-index: 1002;
+            left: 0px;
+        }
+
+        #voteArea {
+            width: 300px;
+            margin: 20px auto;
+        }
+
+        .page-content {
+            padding: 20px 15px 15px;
+        }
+
+        .item {
+        }
+
+        .title {
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-weight: 400;
+            font-size: 24px;
+        }
+
+        .description {
+            margin-bottom: 18px;
+            line-height: 20px;
+            font-size: 0;
+        }
+
+        .desc-union {
+            font-style: normal;
+            color: #8c8c8c;
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        #commentPage {
+            display: none;
+            position: absolute;
+            top: 0px;
+            background-color: #ffffff;
+            z-index: 1003;
+            left: 0px;
+            padding: 10px;
+        }
+
+        .image1 {
+            width: 46px;
+            height: 46px;
+            border-radius: 200px;
+        }
+
+        .name {
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: rgb(234, 234, 234);
+            border-left-width: 1px;
+            border-left-style: solid;
+            border-left-color: rgb(234, 234, 234);
+            border-right-width: 1px;
+            border-right-style: solid;
+            border-right-color: rgb(234, 234, 234);
+        }
+    </style>
+</head>
+<body onload="showStatus()">
+<div>
+    <div class="page-content">
+        <!--<div>Vote(共${totalCount!}票)</div>-->
+        <div class="title">${Session.vote.name}</div><!--标题-->
+        <div class="description">
+            <em id="post-date" class="desc-union">2017-06-09</em>
+            <em class="desc-union">同源物业有限公司</em>
+        </div><!--投票时间、发起人等信息-->
+        <section class="" style="line-height: 25.6px;white-space: normal;">
+            <section class="" style="margin-top: 20px; font-family: 'microsoft YaHei'; border: 0px none;">
+                <section style="text-align: center;">
+                    <section>
+                        <section class=""
+                                 style="padding: 10px 10px 1px 10px; font-size: 18px; font-weight: bold; color: rgb(255, 255, 255); background: rgb(248, 170, 45);">
+                            <p>襄阳襄大同源物业服务有限公司</p></section>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <!--<p style="line-height: 25.6px;white-space: normal;"><br></p>-->
+        <p style="white-space: normal; line-height: 2em;"><strong>&nbsp;&nbsp;<span
+                style="font-size: 14px;">&nbsp;${Session.vote.description}</span></strong></p>
+
+        <br/>
+        <section data-role="outer" label="Powered by 135editor.com"
+                 style="font-size: 16px; line-height: 25.6px; white-space: normal; font-family: 微软雅黑;">
+            <section class="" data-tools="135编辑器" data-id="89175" style="border: 0px none; box-sizing: border-box;">
+                <section class=""
+                         style="margin: 10px auto; padding-top: 3px; border-top-width: 2px; border-top-style: solid; border-top-color: rgb(117, 117, 118); box-sizing: border-box;">
+                    <section class="name">
+                        <p style="font-size: large;margin:5px 0 5px 0;" align="center" style="text-align: center;"><img
+                                class="image1" src="${Session.headImg}"/>${NICKNAME}，诚邀您投票！</p>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <form id="${Session.vote.id}" method="post" action="record.do">
+            <input type="hidden" name="voteId" value="${Session.vote.id}"/>
+            <div id="voteArea" style=" border:dotted 1px green">
+                <#list Session.voteItems as item>
+                    <div class="item">
+                        <input type="radio" id="item${item.id}" name="vItemId" value="${item.id}"/>
+                        <label for="item${item.id}" style="width: 80px;">${item.content}</label>
+                    </div>
+                </#list>
+            </div>
+            <input id="submit" type="button" onclick="record()" value="提交">
+            <p align="center">${totalCount}</p>
+        </form>
+    </div>
+    <!--<div class="progress" style="width: 150px;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
+             style="width:20%">20%
+        </div>
+    </div>-->
+    <hr width="90%" align="center"/>
+    <br/>
+    <hr style="height:1px;border:none;border-top:1px dashed #0066CC;"/>
+    <div class="hr-more">精选留言</div>
+
+    <a href="javascript:void(0)" onclick="showCommentPage()" style="font-size: 16px">写留言<span style="font-size: 12px"
+                                                                                              class="glyphicon glyphicon-pencil"></span></a>
+    <div id="mask"></div>
+    <div id="commentPage">
+        <div class="title">${Session.vote.name}</div>
+        <textarea id="comm_content" name="voteComment.content" class="content"
+                  placeholder="留言将由公众号筛选后显示，对所有人可见。"></textarea>
+        <input type="button" value="提交" onclick="addVoteComment()"/>
+    </div>
+    <div class="comm_list" id="comm_list">
+        <div class="comments">
+            <#list Session.voteComments as voteComment>
+                <div class="comment">
+                    <img src="${voteComment.user_img}" height="40px" width="40px"/>
+                    ${voteComment.nickname}
+                    ${voteComment.content}
+                    <#if (voteComment.had_top)!=1>
+                        <div onclick='topup(this,${voteComment.id})' style='color:#4395F5;cursor:pointer;float: right'>
+                            <span class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span class="top-count">${voteComment.top_count}</span>
+                        </div>
+                        <#else>
+                            <div onclick='topdown(this,${voteComment.id})'
+                                 style='color:#43F595;cursor:pointer;float: right'><span
+                                    class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span class="top-count">${voteComment.top_count}</span>
+                            </div>
+                    </#if>
+                </div>
+            </#list>
+        </div>
+        <div class="comment"></div>
+    </div>
+</div>
+</body>
+<script>
+    /**
+     * 判断是否应该显示结果
+     */
+    function showStatus() {
+        if ("${Session.voteRemain!}" == "0") {
+            var itemStatus = ${Session.itemStatus!"null"};
+            for (var key in itemStatus) {
+                $("#item" + key).next("label").after("<progress style='progress-bar' value="
+                    + parseFloat(itemStatus[key].replace("%", ""))
+                    + " max=100></progress>" + itemStatus[key]);
+                //alert("#item"+key);
+                $("#item" + key).remove();
+                $("#submit").remove();
+            }
+        }
+        else {
+            //alert("还可以投票");
+        }
+    }
+
+    /**
+     * ajax提交表单
+     */
+    function record() {
+        alert($("input[name=vItemId]:checked").val());
+        $.ajax(
+            {
+                type: "POST",
+                url: "record.do",
+                dataType: "json",
+                data: {"vItemId": $("input[name=vItemId]:checked").val()},
+                async: true,
+                success: function (data) {
+                    alert(1);
+                    toastr.option = {
+                        positionClass: "toast-top-full-width"
+                    };
+                    if (data.msg == "ok")//投票成功
+                    {
+                        toastr.success("投票成功");
+                        setTimeout("location.reload()", 2000);
+                    }
+                    else {
+                        toastr.warning(data.msg);
+                    }
+                }
+            });
+    }
+
+    /* getComments();
+     /!**
+     * 获得所有评论，ajax引入
+     *!/
+     function getComments(offset) {
+     $.ajax({
+     type:"POST",
+     url:"comments.do",
+     dataType:"json",
+     data:{"voteId":"${vote.id}","offset":offset},
+     success:function(data){
+     return data;
+     }
+     })
+     }*/
+
+    /**
+     * 显示遮罩层用于评论
+     */
+    function showMask() {
+        $("#mask").css("height", $(document).height());
+        $("#mask").css("width", $(document).width());
+        $("#mask").show();
+    }
+
+    /**
+     * 显示评论输入框
+     */
+    function showCommentPage() {
+        showMask();
+        $("#commentPage").show();
+    }
+
+    /**
+     * 提交评论
+     */
+    function addVoteComment() {
+        $.ajax({
+            type: "POST",
+            url: "addComment.do",
+            dataType: "json",
+            data: {
+                "voteComment.content": $("#comm_content").val(),
+                "voteComment.openid": "${Session.openid}",
+                "voteComment.nickname": "${Session.NICKNAME}",
+                "voteComment.userImg": "${Session.headImg}",
+                "voteComment.voteId": "${Session.vote.id}"
+            },
+            async: "true",
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+
+    function topdown(obj, id) {
+        $.ajax({
+            type: "POST",
+            url: "topdown.do",
+            dataType: "json",
+            data: {"comm_id": id, "openid": "${Session.openid}"},
+            async: "true",
+            success: function (data) {
+                if (data.msg == "ok") {
+                    debugger;
+                    var count = $(obj).find(".top-count").text();
+                    $(obj).find(".top-count").text(parseInt(count) - 1);
+                    $(obj).css("color", "#4395F5").attr("onclick", "topup(this," + id + ")");
+                }
+            }
+        })
+    }
+
+    function topup(obj, id) {
+        $.ajax({
+            type: "POST",
+            url: "topup.do",
+            dataType: "json",
+            data: {"comm_id": id, "openid": "${Session.openid}"},
+            async: "true",
+            success: function (data) {
+                if (data.msg == "ok") {
+                    debugger;
+                    var count = $(obj).find(".top-count").text();
+                    $(obj).find(".top-count").text(parseInt(count) + 1);
+                    $(obj).css("color", "#43F595").attr("onclick", "topdown(this," + id + ")");
+                }
+            }
+        })
+    }
+
+
+    /**
+     * 显示评论
+     */
+    /*var comm_index = 0;
+     showComments(comm_index);
+     function showComments(offset){
+     var html;
+     $.ajax({
+     type:"POST",
+     url:"comments.do",
+     dataType:"json",
+     data:{"voteId":"${vote.id}","offset":offset},
+     success:function(comments){
+     var showStr;
+     if (comments!="")
+     {
+     for (var i = 0; i<comments.length; i++)
+     {
+     html = " <div class=\"comment\">"
+     +"<div style='color:#4395F5;cursor:pointer;float: right'><span class='glyphicon glyphicon-thumbs-up'  onclick='toptop()'></span><span>&nbsp;&nbsp;"+comments[i].toptop+"</span></div>"
+     +"<img src="+comments[i].userImg+" style=\"width: 40px;height: 40px\"/>"
+     +"<p class=\"nickname\">"+comments[i].nickname+"</p>"
+     +"<p class=\"comm_content\">"+comments[i].content+"</p>"
+     +"<p class=\"comm_time\">"+comments[i].createTime+"</p>"
+     +"</div>";
+     }
+     comm_index += 1;
+     showStr = "<div id='show_more'><a href='javascript:void(0)' onclick='showComments("+comm_index+")'>显示更多...</a></div>";
+     }
+     else
+     {
+     //没有更多了
+     showStr = "<div id='show_more'>没有更多了...</div>"
+     }
+     $("#show_more").remove();
+     $("#comm_list").find(".comment").last().after(showStr).after(html);
+     }
+     })
+     }*/
+
+</script>
+</html>
