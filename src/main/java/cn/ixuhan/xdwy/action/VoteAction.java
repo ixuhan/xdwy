@@ -8,6 +8,7 @@ import cn.ixuhan.xdwy.service.VoteCommentService;
 import cn.ixuhan.xdwy.service.VoteItemService;
 import cn.ixuhan.xdwy.service.VoteRecordService;
 import cn.ixuhan.xdwy.service.VoteService;
+import cn.ixuhan.xdwy.util.Sign;
 import cn.ixuhan.xdwy.util.WechatInfo;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Hill on 2017/6/5.
@@ -38,10 +40,10 @@ public class VoteAction extends BaseSupport {
     private VoteCommentService voteCommentService;
 
     //属性
-    private static String OPENID;
-    private static String NICKNAME;
+    private String OPENID;
+    private String NICKNAME;
+    private String headImg;
     private static int voteId;
-    private static JSONObject json = null;
 
     /**
      * 投票主页
@@ -54,13 +56,20 @@ public class VoteAction extends BaseSupport {
             //从url中获得state参数，标识投票id
             voteId = Integer.parseInt(getRequest().getParameter("state"));
 
-            //使用获取到的code 换取OPENID和NICKNAME和headImg
-            if (json == null) {
-                json = WechatInfo.getOpenIdAndToken(code);
+            Object session_code = getRequest().getSession().getAttribute("code");
+            //如果session中的code与传进来的code不相等
+            if (session_code == null || (session_code != null && !code.equals(session_code.toString()))) {
+                getRequest().getSession().setAttribute("code", code);
+                //使用获取到的code 换取OPENID和NICKNAME和headImg
+                JSONObject json = WechatInfo.getOpenIdAndToken(code);
+                OPENID = json.getString("OPENID");
+                NICKNAME = json.getString("NICKNAME");
+                headImg = json.getString("headImg");
+            }else{
+                OPENID = getRequest().getSession().getAttribute("openid").toString();
+                NICKNAME = getRequest().getSession().getAttribute("NICKNAME").toString();
+                headImg = getRequest().getSession().getAttribute("headImg").toString();
             }
-            OPENID = json.getString("OPENID");
-            NICKNAME = json.getString("NICKNAME");
-            String headImg = json.getString("headImg");
 
             //计算所有项目总投票数 A1.fake+A1.real +...
             int totalCount = voteItemService.sumRealAndFakeCount(voteId);
@@ -73,12 +82,13 @@ public class VoteAction extends BaseSupport {
             //获取投票相关信息用于展示
             List<VoteItem> voteItems = voteService.getVoteItemsByVoteId(voteId);
             Vote vote = voteService.getVoteById(voteId);
+
+            getRequest().getSession().setAttribute("openid", OPENID);
             getRequest().getSession().setAttribute("NICKNAME", NICKNAME);
+            getRequest().getSession().setAttribute("headImg", headImg);
             getRequest().getSession().setAttribute("vote", vote);
             System.out.println(vote.getDescription());
             getRequest().getSession().setAttribute("voteItems", voteItems);
-            getRequest().getSession().setAttribute("headImg", headImg);
-            getRequest().getSession().setAttribute("openid", OPENID);
 
             List<HashMap> voteComments = voteCommentService.getVoteCommentByVoteId(OPENID, 1);
 
@@ -96,6 +106,23 @@ public class VoteAction extends BaseSupport {
                 }
                 getRequest().getSession().setAttribute("itemStatus", itemStatus);
             }
+
+            String access_token = WechatInfo.getAccess_token();//获取access_token
+            String jsapi_ticket = WechatInfo.getJsapi_ticket(access_token);//获取jsapi_ticket
+            String url = getRequest().getScheme() + "://";
+            url += getRequest().getHeader("host");
+            url += getRequest().getRequestURI();
+            if (getRequest().getQueryString() != null) {
+                url += "?" + getRequest().getQueryString();
+            }
+            Map<String, String> ret = Sign.sign(jsapi_ticket, url);
+            for (Map.Entry entry : ret.entrySet()) {
+                System.out.println(entry.getKey() + ", " + entry.getValue());
+            }
+            getRequest().getSession().setAttribute("appId", WechatInfo.getAPPID());
+            getRequest().getSession().setAttribute("timestamp", ret.get("timestamp"));
+            getRequest().getSession().setAttribute("nonceStr", ret.get("nonceStr"));
+            getRequest().getSession().setAttribute("signature", ret.get("signature"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,6 +138,9 @@ public class VoteAction extends BaseSupport {
     @Action(value = "record")
     public String record() {
         System.out.println("进入record");
+        OPENID = getRequest().getSession().getAttribute("openid").toString();
+        NICKNAME = getRequest().getSession().getAttribute("NICKNAME").toString();
+
         //OPENID存在且不为空说明当前投票人员是正确认证的
         if (null != OPENID && !OPENID.equals("")) {
             //判断是否达到投票最大限制

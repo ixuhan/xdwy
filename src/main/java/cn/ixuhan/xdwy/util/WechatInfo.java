@@ -25,8 +25,10 @@ public class WechatInfo {
     private static String SECRET = "";
     private static String TOKEN = "";
     private static String access_token = "";
+    private static String jsapi_ticket = "";
     private static long expires_in = 7200;//token 过期时间
     private static Date getTokenTime;
+    private static Date getTicketTime;
 
     //初始化获取appid和secret
     static {
@@ -37,6 +39,7 @@ public class WechatInfo {
         try {
             //初始化时间
             getTokenTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1995-01-01 00:00:00");
+            getTicketTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1995-01-01 00:00:00");
             //把读取到的配置文件加载到配置容器
             properties.load(inputStream);
             //获取APPID
@@ -54,6 +57,11 @@ public class WechatInfo {
         }
     }
 
+    /**
+     * 获取Access_token
+     *
+     * @return
+     */
     public static String getAccess_token() {
         long diff = (getNowTime().getTime() - getTokenTime.getTime()) / 1000; //获取上次与本次TOKEN索要时间差
         if (diff < expires_in) {//如果相隔时间小于expires_in，则直接返回之前的access_token
@@ -76,6 +84,36 @@ public class WechatInfo {
             System.out.println("cant touch url");
         }
         return access_token;
+    }
+
+    /**
+     * 获取Jsapi_ticket
+     *
+     * @param access_token
+     * @return
+     */
+    public static String getJsapi_ticket(String access_token) {
+        long diff = (getNowTime().getTime() - getTicketTime.getTime()) / 1000; //获取上次与本次Ticket索要时间差
+        if (diff < expires_in) {//如果相隔时间小于expires_in，则直接返回之前的jsapi_ticket
+            return jsapi_ticket;
+        }
+        String ticket_uri = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + access_token + "&type=jsapi";
+        try {
+            Document doc = Jsoup.connect(ticket_uri).ignoreContentType(true).get();
+            //返回网页内容
+            String html = doc.body().html().toString();
+            Gson gson = new Gson();
+            Map map = gson.fromJson(html, HashMap.class);
+            //解析网页拿到jsapi_ticket
+            jsapi_ticket = map.get("ticket").toString();
+            //解析网页拿到expires_in
+            expires_in = Long.valueOf(map.get("expires_in").toString().split("\\.")[0]);
+            getTicketTime = getNowTime(); //刷新获取jsapi_ticket时间
+        } catch (IOException io) {
+            System.out.println(io.getMessage());
+            System.out.println("cant touch url");
+        }
+        return jsapi_ticket;
     }
 
     public static Date getNowTime() {

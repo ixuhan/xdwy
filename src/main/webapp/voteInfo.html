@@ -8,10 +8,66 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <title>满意度调查</title>
-
     <script src="/js/jquery.min.js"></script>
     <script src="/js/toastr.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+        wx.config({
+            debug: false,
+            appId: 'wx7d8413cfab12360c',
+            timestamp: '${Session.timestamp}',
+            nonceStr: '${Session.nonceStr}',
+            signature: '${Session.signature}',
+            jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone'] // 功能列表，分享相关
+        });
+        wx.ready(function () {
+            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
 
+            // 获取"分享到朋友圈"按钮点击状态及自定义分享内容接口
+            wx.onMenuShareTimeline({
+                title: '襄大同源物业公司满意度投票', // 分享标题
+                link: 'http://xdwy.ixuhan.cn/jump.html',
+                imgUrl: 'http://xdwy.ixuhan.cn/logo.png' // 分享图标
+            });
+
+
+            // 获取"分享给朋友"按钮点击状态及自定义分享内容接口
+            wx.onMenuShareAppMessage({
+                title: '襄大同源物业公司满意度投票', // 分享标题
+                desc: '襄阳襄大同源物业服务有限公司成立于2014年3月，为湖北文理学院资产经营管理有限公司全资子公司，前身为湖北文理学院中原路与建华路校区物业管理处，现在按现代化物业管理制度全面运营。', // 分享描述
+                link: 'http://xdwy.ixuhan.cn/jump.html',
+                imgUrl: 'http://xdwy.ixuhan.cn/logo.png', // 分享图标
+                type: 'link' // 分享类型,music、video或link，不填默认为link
+            });
+
+
+            //获取"分享到QQ"按钮点击状态及自定义分享内容接口
+            wx.onMenuShareQQ({
+                title: '襄大同源物业公司满意度投票', // 分享标题
+                desc: '襄阳襄大同源物业服务有限公司成立于2014年3月，为湖北文理学院资产经营管理有限公司全资子公司，前身为湖北文理学院中原路与建华路校区物业管理处，现在按现代化物业管理制度全面运营。', // 分享描述
+                link: 'http://xdwy.ixuhan.cn/jump.html',
+                imgUrl: 'http://xdwy.ixuhan.cn/logo.png' // 分享图标
+            });
+
+
+            //获取"分享到腾讯微博"按钮点击状态及自定义分享内容接口
+            wx.onMenuShareWeibo({
+                title: '襄大同源物业公司满意度投票', // 分享标题
+                desc: '襄阳襄大同源物业服务有限公司成立于2014年3月，为湖北文理学院资产经营管理有限公司全资子公司，前身为湖北文理学院中原路与建华路校区物业管理处，现在按现代化物业管理制度全面运营。', // 分享描述
+                link: 'http://xdwy.ixuhan.cn/jump.html',
+                imgUrl: 'http://xdwy.ixuhan.cn/logo.png' // 分享图标
+            });
+
+
+            //获取"分享到QQ空间"按钮点击状态及自定义分享内容接口
+            wx.onMenuShareQZone({
+                title: '襄大同源物业公司满意度投票', // 分享标题
+                desc: '襄阳襄大同源物业服务有限公司成立于2014年3月，为湖北文理学院资产经营管理有限公司全资子公司，前身为湖北文理学院中原路与建华路校区物业管理处，现在按现代化物业管理制度全面运营。', // 分享描述
+                link: 'http://xdwy.ixuhan.cn/jump.html',
+                imgUrl: 'http://xdwy.ixuhan.cn/logo.png' // 分享图标
+            });
+        });
+    </script>
 
     <link href="/css/toastr.css" rel="stylesheet" type="text/css">
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -174,10 +230,10 @@
                     <section class="name">
                         <p style="font-size: large;margin:5px 0 5px 0;" align="center" style="text-align: center;"><img
                                 class="image1" src="${Session.headImg}"/>${NICKNAME}，
-                            <#if (Session.voteRemain!)==0>
+                            <#if (Session.voteRemain?number)==0>
                                 您已投，谢谢！
-                            <#else>
-                                诚邀您投票！
+                                <#else>
+                                    诚邀您投票！
                             </#if>
                         </p>
                     </section>
@@ -215,8 +271,8 @@
     <div>
         <div style="height: 20px;margin: -5% 4% 0 0;float: right">
             <a href="javascript:void(0)" onclick="showCommentPage()" style="font-size: 16px">写留言<span
-                style="font-size: 12px"
-                class="glyphicon glyphicon-pencil"></span></a>
+                    style="font-size: 12px"
+                    class="glyphicon glyphicon-pencil"></span></a>
         </div>
     </div>
     <div class="comm_list" id="comm_list">
@@ -225,25 +281,33 @@
                 <div class="comment">
                     <div>
                         <div>
-                            <div style="display: inline"><img src="${voteComment.user_img}" height="30px" width="30px"/></div>
+                            <div style="display: inline"><img src="${voteComment.user_img}" height="30px" width="30px"/>
+                            </div>
                             <div style="display: inline;color: #5e5e5e">${voteComment.nickname}</div>
                             <#if (voteComment.had_top)==0>
-                                <div onclick='topup(this,${voteComment.id})' style='display: inline;float: right;color:#4395F5;cursor:pointer;float: right'>
-                                    <span class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span class="top-count">${voteComment.top_count}</span>
+                                <div onclick='topup(this,${voteComment.id})'
+                                     style='display: inline;float: right;color:#4395F5;cursor:pointer;float: right'>
+                                    <span class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span
+                                        class="top-count">${voteComment.top_count}</span>
                                 </div>
-                            <#else>
-                                <div onclick='topdown(this,${voteComment.id})' style='display: inline;float: right;color:#43F595;cursor:pointer;float: right'>
-                                    <span class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span class="top-count">${voteComment.top_count}</span>
-                                </div>
+                                <#else>
+                                    <div onclick='topdown(this,${voteComment.id})'
+                                         style='display: inline;float: right;color:#ffab29;cursor:pointer;float: right'>
+                                        <span class='glyphicon glyphicon-thumbs-up'></span>&nbsp;&nbsp;<span
+                                            class="top-count">${voteComment.top_count}</span>
+                                    </div>
                             </#if>
                         </div>
-                        <div style="margin-left: 35px;word-wrap: break-word;color: #3E444A;font-size: large">${voteComment.content}</div>
+                        <div style="margin-left: 35px;word-wrap: break-word;color: #3E444A;font-size: large">
+                            ${voteComment.content}
+                        </div>
                         <div style="margin-left: 35px;color: #BDBDBD">${voteComment.create_time}</div>
                     </div>
                 </div>
             </#list>
         </div>
-        <div class="comment" style="margin: 0 auto;"><p align="center" style="color: #8c8c8c;margin-top: 10px">留言将由公众号筛选后显示</p></div>
+        <div class="comment" style="margin: 0 auto;"><p align="center" style="color: #8c8c8c;margin-top: 10px">
+            留言将由公众号筛选后显示</p></div>
         <br/>
     </div>
 </div>
@@ -255,7 +319,7 @@
     <input type="button" id="comm_submit_btn" value="提交" onclick="addVoteComment()" class="btn btn-success"
            disabled="disabled" style="width: 96%;"/>
     <input type="button" value="返回" onclick="backComment()" class="btn btn-warning"
-          style="width: 96%;margin-top: 5px;"/>
+           style="width: 96%;margin-top: 5px;"/>
 </div>
 </body>
 <script>
@@ -263,7 +327,7 @@
      * 判断是否应该显示结果
      */
     function showStatus() {
-        if ("${Session.voteRemain!}" == "0") {
+        if ("${Session.voteRemain?number}" == 0) {
             var itemStatus = ${Session.itemStatus!"null"};
             for (var key in itemStatus) {
                 $("#item" + key).next("label").after("<progress style='progress-bar;margin-left:15px;' value="
@@ -283,7 +347,7 @@
      * ajax提交表单
      */
     function record() {
-        if($("input[name=vItemId]:checked").val() == undefined){
+        if ($("input[name=vItemId]:checked").val() == undefined) {
             toastr.warning("请先作出您的选择");
             return;
         }
@@ -302,6 +366,7 @@
                     {
                         toastr.success("投票成功");
                         setTimeout("location.reload()", 2000);
+                        /*setTimeout(function(){window.location.href=window.location.href+"?tm="+new Date().getTime()}, 2000);*/
                     }
                     else {
                         toastr.warning(data.msg);
@@ -418,7 +483,7 @@
                     debugger;
                     var count = $(obj).find(".top-count").text();
                     $(obj).find(".top-count").text(parseInt(count) + 1);
-                    $(obj).css("color", "#43F595").attr("onclick", "topdown(this," + id + ")");
+                    $(obj).css("color", "#ffab29").attr("onclick", "topdown(this," + id + ")");
                 }
             }
         })
